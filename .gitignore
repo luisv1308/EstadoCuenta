@@ -361,3 +361,24 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.csproj.user
+*.csproj.nuget.dgspec.json
+*.csproj.nuget.g.props
+*.csproj.nuget.g.targets
+
+# Build
+bin/
+obj/
+
+# Entity Framework
+Migrations/
+
+# Configuración
+appsettings.json
+appsettings.Development.json
+secrets.json
