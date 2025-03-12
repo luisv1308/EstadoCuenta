@@ -2,6 +2,8 @@ using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.Data;
 using EstadoCuenta.Api.DTOs;
 using EstadoCuenta.Api.Repositories;
+using EstadoCuenta.Api.Validators;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -33,6 +35,10 @@ builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>();
 
 builder.Services.AddMediatR(typeof(GetTarjetaByIdQuery).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddControllers().AddFluentValidation(fv =>
+{
+    fv.RegisterValidatorsFromAssemblyContaining<TarjetaCreditoValidator>();
+});
 
 var app = builder.Build();
 
