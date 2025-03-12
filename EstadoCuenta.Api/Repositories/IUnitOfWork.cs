@@ -1,6 +1,9 @@
-﻿namespace EstadoCuenta.Api.Repositories
+﻿using System;
+using System.Threading.Tasks;
+
+namespace EstadoCuenta.Api.Repositories
 {
-    public class IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         ITarjetaCreditoRepository TarjetasCredito { get; }
         ITransaccionRepository Transacciones { get; }

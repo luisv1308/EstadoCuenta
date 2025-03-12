@@ -13,14 +13,14 @@ namespace EstadoCuenta.Api.Repositories
             _context = context;
         }
 
-        public async Task<TarjetaCredito?> ObtenerPorId(int id)
+        public async Task<TarjetaCredito?> ObtenerPorIdAsync(int id)
         {
             return await _context.TarjetasCredito
                 .Include(tc => tc.Transacciones )
                 .FirstOrDefaultAsync(tc => tc.Id == id);
         }
 
-        public async Task<IEnumerable<TarjetaCredito>> ObtenerTodasAsync()
+        public async Task<IEnumerable<TarjetaCredito>> ObtenerTodosAsync()
         {
             return await _context.TarjetasCredito.Include(tc => tc.Transacciones).ToListAsync();
         }

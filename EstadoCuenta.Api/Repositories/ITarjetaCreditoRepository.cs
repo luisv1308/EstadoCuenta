@@ -2,7 +2,7 @@
 
 namespace EstadoCuenta.Api.Repositories
 {
-    public class ITarjetaCreditoRepository
+    public interface ITarjetaCreditoRepository
     {
         Task<TarjetaCredito?> ObtenerPorIdAsync(int id);
         Task<IEnumerable<TarjetaCredito>> ObtenerTodosAsync();

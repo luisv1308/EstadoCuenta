@@ -2,7 +2,7 @@
 
 namespace EstadoCuenta.Api.Repositories
 {
-    public class ITransaccionRepository
+    public interface ITransaccionRepository
     {
         Task<IEnumerable<Transaccion>> ObtenerPorTarjetaAsync(int idTarjeta);
         Task AgregarAsync(Transaccion transaccion);
