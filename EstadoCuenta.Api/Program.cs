@@ -1,5 +1,7 @@
+using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.Data;
 using EstadoCuenta.Api.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -27,6 +29,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITarjetaCreditoRepository, TarjetaCreditoRepository>();
 builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>();
+
+builder.Services.AddMediatR(typeof(GetTarjetaByIdQuery).Assembly);
 
 var app = builder.Build();
 
