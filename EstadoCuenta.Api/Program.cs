@@ -1,5 +1,6 @@
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.Data;
+using EstadoCuenta.Api.DTOs;
 using EstadoCuenta.Api.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<ITarjetaCreditoRepository, TarjetaCreditoRepository>(
 builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>();
 
 builder.Services.AddMediatR(typeof(GetTarjetaByIdQuery).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

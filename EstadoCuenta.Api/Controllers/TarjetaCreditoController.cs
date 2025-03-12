@@ -1,5 +1,7 @@
-﻿using EstadoCuenta.Api.CQRS.Commands;
+﻿using AutoMapper;
+using EstadoCuenta.Api.CQRS.Commands;
 using EstadoCuenta.Api.CQRS.Queries;
+using EstadoCuenta.Api.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,14 @@ namespace EstadoCuenta.Api.Controllers
     [Route("api/[controller]")]
     public class TarjetaCreditoController : ControllerBase
     {
-       private readonly IMediator _mediator;
-        public TarjetaCreditoController(IMediator mediator)
+
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+       
+        public TarjetaCreditoController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -21,6 +27,8 @@ namespace EstadoCuenta.Api.Controllers
             var tarjeta = await _mediator.Send(new GetTarjetaByIdQuery(id));
             if (tarjeta == null)
                 return NotFound();
+
+            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
 
             return Ok(tarjeta);
         }
