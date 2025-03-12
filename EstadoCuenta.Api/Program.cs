@@ -1,6 +1,14 @@
+using EstadoCuenta.Api.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar la cadena de conexión a la base de datos
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 // Agregar servicios a la API
 builder.Services.AddControllers();
