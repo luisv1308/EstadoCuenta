@@ -34,7 +34,7 @@ namespace EstadoCuenta.Api.Controllers
 
             var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
 
-            return Ok(tarjeta);
+            return Ok(tarjetaDTO);
         }
 
         [HttpPost]
