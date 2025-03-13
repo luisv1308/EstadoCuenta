@@ -8,7 +8,8 @@ namespace EstadoCuenta.Api.DTOs
         public MappingProfile()
         {
             CreateMap<Transaccion, TransaccionDTO>().ReverseMap();
-            CreateMap<TarjetaCredito, TarjetaCreditoDTO>().ReverseMap();
+            CreateMap<TarjetaCredito, TarjetaCreditoDTO>().ReverseMap()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
