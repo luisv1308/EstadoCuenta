@@ -7,10 +7,14 @@ using EstadoCuenta.Api.Services;
 using EstadoCuenta.Api.Validators;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Data;
+using HealthChecks.UI.Client;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,9 +62,26 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSignalR();
 
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .AddPrivateMemoryHealthCheck(maximumMemoryBytes: 512 * 1024 * 1024, name: "Uso de Memoria") // 512MB
+    .AddDiskStorageHealthCheck(setup =>
+    {
+        setup.AddDrive("C:\\", minimumFreeMegabytes: 1024); // Verifica si hay al menos 1GB libre en C:
+    }, name: "Espacio en Disco");
+
 var app = builder.Build();
 
 app.UseCors("AllowFrontend");
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 // Habilitar Swagger en desarrollo
 if (app.Environment.IsDevelopment())
