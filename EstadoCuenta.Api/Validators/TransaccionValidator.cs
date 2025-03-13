@@ -22,7 +22,7 @@ namespace EstadoCuenta.Api.Validators
 
             RuleFor(x => x.Tipo)
                 .Must(tipo => tipo == "Compra" || tipo == "Pago")
-                .WithMessage("El tipo de transaccion debe ser compra o pago");
+                .WithMessage("El tipo de transaccion debe ser Compra o Pago");
 
             RuleFor(x => x.Fecha)
                 .LessThanOrEqualTo(DateTime.Now)
