@@ -7,6 +7,8 @@ namespace EstadoCuenta.Api.Services
     {
         public byte[] GenerarEstadoCuentaExcel(TarjetaCreditoDTO tarjetaCredito, IEnumerable<TransaccionDTO> transacciones)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Estado de Cuenta");
@@ -32,6 +34,7 @@ namespace EstadoCuenta.Api.Services
                     worksheet.Cells[$"B{row}"].Value = transaccion.Descripcion;
                     worksheet.Cells[$"C{row}"].Value = transaccion.Monto;
                     worksheet.Cells[$"D{row}"].Value = transaccion.Tipo;
+                    row++;
                 }
 
                 return package.GetAsByteArray();

@@ -25,7 +25,7 @@ namespace EstadoCuenta.Api.CQRS.Commands
              SaldoActual = 0
          };
 
-         _unitOfWork.TarjetasCredito.AgregarAsync(tarjeta);
+         await _unitOfWork.TarjetasCredito.AgregarAsync(tarjeta);
          await _unitOfWork.SaveChangesAsync();
 
          return tarjeta.Id;

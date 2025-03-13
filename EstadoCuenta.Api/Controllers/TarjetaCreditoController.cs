@@ -2,6 +2,7 @@
 using EstadoCuenta.Api.CQRS.Commands;
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.DTOs;
+using EstadoCuenta.Api.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,36 @@ namespace EstadoCuenta.Api.Controllers
             var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(ObtenerTarjeta), new { id }, id);
+        }
+
+        [HttpGet("{id}/export/pdf")]
+        public async Task<IActionResult> ExportarEstadoCuentaPdf(int id, [FromServices] PdfService pdfService)
+        {
+            var tarjeta = await _mediator.Send(new GetTarjetaByIdQuery(id));
+            if (tarjeta == null) return NotFound();
+            
+            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
+            if (tarjetaDTO == null) return NotFound();
+
+            var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
+            var pdfBytes = pdfService.GenerarEstadoCuentaPdf(tarjetaDTO, transacciones);
+
+            return File(pdfBytes, "application/pdf", $"EstadoCuenta_{tarjeta.Titular}.pdf");
+        }
+
+        [HttpGet("{id}/export/excel")]
+        public async Task<IActionResult> ExportarEstadoCuentaExcel(int id, [FromServices] ExcelService excelService)
+        {
+            var tarjeta = await _mediator.Send(new GetTarjetaByIdQuery(id));
+            if (tarjeta == null) return NotFound();
+
+            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
+            if (tarjetaDTO == null) return NotFound();
+
+            var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
+            var excelBytes = excelService.GenerarEstadoCuentaExcel(tarjetaDTO, transacciones);
+
+            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EstadoCuenta_{tarjeta.Titular}.xlsx");
         }
     }
 }
