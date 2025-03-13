@@ -21,6 +21,13 @@ namespace EstadoCuenta.Api.Services
                 document.Add(new Paragraph($"Límite de crédito: {tarjetaCredito.LimiteCredito}"));
                 document.Add(new Paragraph("\n"));
 
+                // Calculos
+                document.Add(new Paragraph($"Interés Bonificable: ${tarjetaCredito.InteresBonificable:F2}"));
+                document.Add(new Paragraph($"Cuota Mínima a Pagar: ${tarjetaCredito.CuotaMinimaPagar:F2}"));
+                document.Add(new Paragraph($"Monto Total a Pagar: ${tarjetaCredito.MontoTotalPagar:F2}"));
+                document.Add(new Paragraph($"Pago de Contado con Intereses: ${tarjetaCredito.PagoContadoConIntereses:F2}"));
+                document.Add(new Paragraph("\n"));
+
                 // Creando tabla de transacciones
                 PdfPTable table = new PdfPTable(4);
                 table.AddCell("Fecha");
@@ -32,7 +39,7 @@ namespace EstadoCuenta.Api.Services
                 {
                     table.AddCell(transaccion.Fecha.ToString("dd/MM/yyyy"));
                     table.AddCell(transaccion.Descripcion);
-                    table.AddCell($"${transaccion.Monto}");
+                    table.AddCell($"${transaccion.Monto:F2}");
                     table.AddCell(transaccion.Tipo);
                 }
 
