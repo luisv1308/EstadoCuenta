@@ -2,6 +2,7 @@ using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.Data;
 using EstadoCuenta.Api.DTOs;
 using EstadoCuenta.Api.Repositories;
+using EstadoCuenta.Api.Services;
 using EstadoCuenta.Api.Validators;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -39,6 +40,8 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<TarjetaCreditoValidator>();
 });
+builder.Services.AddScoped<PdfService>();
+builder.Services.AddScoped<ExcelService>();
 
 var app = builder.Build();
 
