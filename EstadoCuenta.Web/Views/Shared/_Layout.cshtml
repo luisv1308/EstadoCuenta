@@ -1,49 +1,54 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EstadoCuenta.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - Estado de Cuenta</title>
     <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EstadoCuenta.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EstadoCuenta.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <a asp-controller="Home" asp-action="Index" class="text-lg font-bold">Banca En Linea</a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a asp-controller="Home" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Inicio</a>
+                    <a asp-controller="EstadoCuenta" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Estado de Cuenta</a>
+                    <a asp-controller="Compras" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Compras</a>
+                    <a asp-controller="Pagos" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Pagos</a>
+                    <a asp-controller="Historial" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Historial de Transacciones</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - EstadoCuenta.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+        <!-- Menú desplegable en móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-700 px-4 py-2 space-y-2">
+            <a asp-controller="Home" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Inicio</a>
+            <a asp-controller="EstadoCuenta" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Estado de Cuenta</a>
+            <a asp-controller="Compras" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Compras</a>
+            <a asp-controller="Pagos" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Pagos</a>
+            <a asp-controller="Historial" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Historial de Transacciones</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="flex-grow container mx-auto mt-6 px-4">
+        @RenderBody()
+    </main>
+
+    <!-- Footer fijo abajo -->
+    <footer class="bg-gray-900 text-white text-center py-4 mt-auto">
+        <p>&copy; @DateTime.Now.Year - Estado de Cuenta</p>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
