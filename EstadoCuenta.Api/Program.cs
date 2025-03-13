@@ -1,6 +1,7 @@
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.Data;
 using EstadoCuenta.Api.DTOs;
+using EstadoCuenta.Api.Hubs;
 using EstadoCuenta.Api.Repositories;
 using EstadoCuenta.Api.Services;
 using EstadoCuenta.Api.Validators;
@@ -42,8 +43,20 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 });
 builder.Services.AddScoped<PdfService>();
 builder.Services.AddScoped<ExcelService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()); 
+});
+builder.Services.AddSignalR();
 
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 // Habilitar Swagger en desarrollo
 if (app.Environment.IsDevelopment())
@@ -58,6 +71,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.MapHub<TransaccionesHub>("/transaccionesHub").RequireCors("AllowFrontend");
+
 app.MapControllers();
 
 app.Run();
