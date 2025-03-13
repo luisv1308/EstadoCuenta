@@ -1,4 +1,6 @@
-﻿using EstadoCuenta.Api.Data;
+﻿using System.Data;
+using Dapper;
+using EstadoCuenta.Api.Data;
 using EstadoCuenta.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,17 +9,26 @@ namespace EstadoCuenta.Api.Repositories
     public class TarjetaCreditoRepository : ITarjetaCreditoRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbConnection _dbConnection;
 
-        public TarjetaCreditoRepository(ApplicationDbContext context)
+        public TarjetaCreditoRepository(ApplicationDbContext context, IDbConnection dbConnection)
         {
             _context = context;
+            _dbConnection = dbConnection;
         }
 
         public async Task<TarjetaCredito?> ObtenerPorIdAsync(int id)
         {
-            return await _context.TarjetasCredito
-                .Include(tc => tc.Transacciones )
-                .FirstOrDefaultAsync(tc => tc.Id == id);
+            var parameters = new DynamicParameters();
+            parameters.Add("@TarjetaId", id);
+
+            var tarjeta = await _dbConnection.QueryFirstOrDefaultAsync<TarjetaCredito>(
+                "sp_ObtenerEstadoCuenta",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return tarjeta;
         }
 
         public async Task<IEnumerable<TarjetaCredito>> ObtenerTodosAsync()
