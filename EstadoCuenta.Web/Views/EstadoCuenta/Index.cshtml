@@ -1,25 +1,17 @@
-﻿@page
-@model EstadoCuenta.Web.Views.EstadoCuenta.IndexModel
-@{
-}
+﻿@model EstadoCuenta.Web.Models.EstadoCuentaViewModel
 @{
     ViewData["Title"] = "Estado de Cuenta";
 }
 
 <div class="p-6 bg-gray-100 min-h-screen">
-    <!-- Sección de Información de la Tarjeta -->
     <div class="bg-white shadow-lg p-6 rounded-lg">
         <h1 class="text-2xl font-bold text-blue-600">Estado de Cuenta</h1>
-        <div class="mt-4 space-y-2">
-            <p><strong>Nombre:</strong> <span id="titular" class="text-gray-700"></span></p>
-            <p><strong>Número de Tarjeta:</strong> <span id="numeroTarjeta" class="text-gray-700"></span></p>
-            <p><strong>Saldo Actual:</strong> $<span id="saldoActual" class="text-gray-700"></span></p>
-            <p><strong>Límite de Crédito:</strong> $<span id="limiteCredito" class="text-gray-700"></span></p>
-            <p><strong>Saldo Disponible:</strong> $<span id="saldoDisponible" class="text-gray-700"></span></p>
-        </div>
+        <p><strong>Nombre:</strong> @Model.Titular</p>
+        <p><strong>Número de Tarjeta:</strong> @Model.NumeroTarjeta</p>
+        <p><strong>Saldo Actual:</strong> $@Model.SaldoActual</p>
+        <p><strong>Límite de Crédito:</strong> $@Model.LimiteCredito</p>
     </div>
 
-    <!-- Sección de Compras del Mes -->
     <div class="bg-white shadow-lg p-6 rounded-lg mt-6">
         <h2 class="text-xl font-bold text-blue-600">Compras del Mes</h2>
         <table class="w-full mt-4 bg-white shadow-md rounded-lg">
@@ -30,8 +22,15 @@
                     <th class="p-3 text-left">Monto</th>
                 </tr>
             </thead>
-            <tbody id="compras" class="text-gray-700">
-                <!-- Las compras se llenarán dinámicamente -->
+            <tbody>
+                @foreach (var compra in Model.Compras)
+                {
+                    <tr class="border-t">
+                        <td class="p-3">@compra.Fecha</td>
+                        <td class="p-3">@compra.Descripcion</td>
+                        <td class="p-3 text-red-600">$@compra.Monto</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -40,18 +39,16 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <div class="bg-white shadow-lg p-6 rounded-lg">
             <h2 class="text-xl font-bold text-blue-600">Totales</h2>
-            <p><strong>Total Compras Mes Actual:</strong> $<span id="totalMesActual" class="text-gray-700"></span></p>
-            <p><strong>Total Compras Mes Anterior:</strong> $<span id="totalMesAnterior" class="text-gray-700"></span></p>
+            <p><strong>Total Compras Mes Actual:</strong> $<span id="totalMesActual" class="text-gray-700">@Model.TotalMesActual</span></p>
+            <p><strong>Total Compras Mes Anterior:</strong> $<span id="totalMesAnterior" class="text-gray-700">@Model.TotalMesAnterior</span></p>
         </div>
 
         <div class="bg-white shadow-lg p-6 rounded-lg">
             <h2 class="text-xl font-bold text-blue-600">Cálculos Financieros</h2>
-            <p><strong>Interés Bonificable:</strong> $<span id="interesBonificable" class="text-gray-700"></span></p>
-            <p><strong>Cuota Mínima a Pagar:</strong> $<span id="cuotaMinimaPagar" class="text-gray-700"></span></p>
-            <p><strong>Monto Total a Pagar:</strong> $<span id="montoTotalPagar" class="text-gray-700"></span></p>
-            <p><strong>Pago de Contado con Intereses:</strong> $<span id="pagoContado" class="text-gray-700"></span></p>
+            <p><strong>Interés Bonificable:</strong> $<span id="interesBonificable" class="text-gray-700">@Model.InteresBonificable</span></p>
+            <p><strong>Cuota Mínima a Pagar:</strong> $<span id="cuotaMinimaPagar" class="text-gray-700">@Model.CuotaMinimaPagar</span></p>
+            <p><strong>Monto Total a Pagar:</strong> $<span id="montoTotalPagar" class="text-gray-700">@Model.MontoTotalPagar</span></p>
+            <p><strong>Pago de Contado con Intereses:</strong> $<span id="pagoContado" class="text-gray-700">@Model.PagoContadoConIntereses</span></p>
         </div>
     </div>
 </div>
-
-<script src="~/js/estadoCuenta.js"></script>

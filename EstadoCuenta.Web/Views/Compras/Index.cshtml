@@ -1,4 +1,55 @@
-﻿@page
-@model EstadoCuenta.Web.Views.Compras.IndexModel
+﻿@model List<EstadoCuenta.Web.Models.TransaccionViewModel>
+
 @{
+    ViewData["Title"] = "Compras";
 }
+
+<div class="p-6 bg-gray-100 min-h-screen">
+    <div class="bg-white shadow-lg p-6 rounded-lg">
+        <h1 class="text-2xl font-bold text-blue-600">Compras</h1>
+
+        <!-- Formulario para agregar compra -->
+        <form asp-action="AgregarCompra" method="post" class="mt-4 space-y-4">
+            <div>
+                <label for="Descripcion" class="block text-gray-700 font-bold">Descripción</label>
+                <input type="text" asp-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Descripcion)" class="w-full p-2 border rounded-lg">
+                <span asp-validation-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Descripcion)" class="text-red-500"></span>
+            </div>
+            <div>
+                <label for="Monto" class="block text-gray-700 font-bold">Monto</label>
+                <input type="number" asp-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Monto)" class="w-full p-2 border rounded-lg">
+                <span asp-validation-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Monto)" class="text-red-500"></span>
+            </div>
+            <div>
+                <label for="Fecha" class="block text-gray-700 font-bold">Fecha</label>
+                <input type="date" asp-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Fecha)" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="w-full p-2 border rounded-lg">
+                <span asp-validation-for="@(new EstadoCuenta.Web.Models.TransaccionViewModel().Fecha)" class="text-red-500"></span>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Agregar Compra</button>
+        </form>
+    </div>
+
+    <!-- Tabla de compras -->
+    <div class="bg-white shadow-lg p-6 rounded-lg mt-6">
+        <h2 class="text-xl font-bold text-blue-600">Historial de Compras</h2>
+        <table class="w-full mt-4 bg-white shadow-md rounded-lg">
+            <thead>
+                <tr class="bg-blue-600 text-white">
+                    <th class="p-3 text-left">Fecha</th>
+                    <th class="p-3 text-left">Descripción</th>
+                    <th class="p-3 text-left">Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var compra in Model)
+                {
+                    <tr class="border-t">
+                        <td class="p-3">@compra.Fecha.ToString("yyyy-MM-dd")</td>
+                        <td class="p-3">@compra.Descripcion</td>
+                        <td class="p-3 text-red-600">$@compra.Monto</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

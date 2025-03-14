@@ -30,6 +30,15 @@ namespace EstadoCuenta.Api.Repositories
             );
         }
 
+        public async Task<IEnumerable<Transaccion>> ObtenerPorTipoAsync(int tarjetaId, string tipo)
+        {
+            var tarjeta = await _context.Transacciones
+                .Where(t => t.TarjetaCreditoId == tarjetaId && t.Tipo == tipo)
+                .ToListAsync();
+
+            return tarjeta;
+        }
+
         public async Task AgregarAsync(Transaccion transaccion)
         {
             await _context.Transacciones.AddAsync(transaccion);
