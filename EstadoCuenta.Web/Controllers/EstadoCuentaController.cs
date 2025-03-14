@@ -29,5 +29,33 @@ namespace EstadoCuenta.Web.Controllers
 
             return View(estadoCuenta);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportarPdf(int id)
+        {
+            var response = await _httpClient.GetAsync($"https://localhost:7264/api/Export/pdf/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest("No se pudo generar el PDF.");
+            }
+
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+            return File(pdfBytes, "application/pdf", "EstadoCuenta.pdf");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportarExcel(int id)
+        {
+            var response = await _httpClient.GetAsync($"https://localhost:7264/api/Export/excel/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest("No se pudo generar el Excel.");
+            }
+
+            var excelBytes = await response.Content.ReadAsByteArrayAsync();
+            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EstadoCuenta.xlsx");
+        }
     }
 }

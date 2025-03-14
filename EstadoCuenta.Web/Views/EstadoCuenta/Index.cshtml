@@ -12,6 +12,15 @@
         <p><strong>Límite de Crédito:</strong> $@Model.LimiteCredito</p>
     </div>
 
+    <div class="flex space-x-4 mt-6">
+        <a href="@Url.Action("ExportarPdf", "EstadoCuenta", new { id = 1 })" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700">
+            📄 Exportar PDF
+        </a>
+        <a href="@Url.Action("ExportarExcel", "EstadoCuenta", new { id = 1 })" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700">
+            📊 Exportar Excel
+        </a>
+    </div>
+
     <div class="bg-white shadow-lg p-6 rounded-lg mt-6">
         <h2 class="text-xl font-bold text-blue-600">Compras Del Mes</h2>
 
