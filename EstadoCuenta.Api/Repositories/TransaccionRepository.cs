@@ -34,6 +34,8 @@ namespace EstadoCuenta.Api.Repositories
         {
             var tarjeta = await _context.Transacciones
                 .Where(t => t.TarjetaCreditoId == tarjetaId && t.Tipo == tipo)
+                .OrderByDescending(t => t.Fecha)
+                .ThenByDescending(t => t.Id)
                 .ToListAsync();
 
             return tarjeta;

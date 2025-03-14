@@ -4,7 +4,7 @@
     ViewData["Title"] = "Compras";
 }
 
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-100 ">
     <div class="bg-white shadow-lg p-6 rounded-lg">
         <h1 class="text-2xl font-bold text-blue-600">Compras</h1>
 
@@ -32,24 +32,28 @@
     <!-- Tabla de compras -->
     <div class="bg-white shadow-lg p-6 rounded-lg mt-6">
         <h2 class="text-xl font-bold text-blue-600">Historial de Compras</h2>
-        <table class="w-full mt-4 bg-white shadow-md rounded-lg">
-            <thead>
-                <tr class="bg-blue-600 text-white">
-                    <th class="p-3 text-left">Fecha</th>
-                    <th class="p-3 text-left">Descripción</th>
-                    <th class="p-3 text-left">Monto</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var compra in Model)
-                {
-                    <tr class="border-t">
-                        <td class="p-3">@compra.Fecha.ToString("yyyy-MM-dd")</td>
-                        <td class="p-3">@compra.Descripcion</td>
-                        <td class="p-3 text-red-600">$@compra.Monto</td>
+
+        <!-- Contenedor con scroll y encabezado fijo -->
+        <div class="overflow-x-auto max-h-96 relative">
+            <table class="w-full bg-white shadow-md rounded-lg">
+                <thead class="bg-blue-600 text-white sticky top-0">
+                    <tr>
+                        <th class="p-3 text-left">Fecha</th>
+                        <th class="p-3 text-left">Descripción</th>
+                        <th class="p-3 text-left">Monto</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach (var compra in Model)
+                    {
+                        <tr class="border-t">
+                            <td class="p-3">@compra.Fecha.ToString("yyyy-MM-dd")</td>
+                            <td class="p-3">@compra.Descripcion</td>
+                            <td class="p-3 text-red-600">$@compra.Monto</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

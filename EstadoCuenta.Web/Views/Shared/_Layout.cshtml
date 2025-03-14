@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,7 +34,7 @@
     </nav>
 
     <!-- Contenido principal -->
-    <main class="flex-grow container mx-auto mt-6 px-4">
+    <main class="flex-grow container mx-auto mt-6 px-4 overflow-auto">
         @RenderBody()
     </main>
 
@@ -50,6 +50,50 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <div id="notification-container" class="fixed right-4 right-4 z-50 hidden">
+        <div class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-3">
+            <span>🔔 Nueva transacción recibida</span>
+            <button id="close-notification" class="text-white font-bold">✖</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Conectar con SignalR
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:7264/transaccionesHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            // Manejo de nueva transacción recibida
+            connection.on("RecibirTransaccion", function (transaccion) {
+                mostrarNotificacion();
+            });
+
+            connection.start().catch(function (err) {
+                console.error(err.toString());
+            });
+
+            // Función para mostrar la notificación
+            function mostrarNotificacion() {
+                let notification = document.getElementById("notification-container");
+                notification.classList.remove("hidden");
+
+                // Ocultar después de 5 segundos
+                setTimeout(() => {
+                    notification.classList.add("hidden");
+                }, 5000);
+            }
+
+            // Cerrar notificación manualmente
+            document.getElementById("close-notification").addEventListener("click", function () {
+                document.getElementById("notification-container").classList.add("hidden");
+            });
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
