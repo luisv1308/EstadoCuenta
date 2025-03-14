@@ -49,35 +49,5 @@ namespace EstadoCuenta.Api.Controllers
 
             return CreatedAtAction(nameof(ObtenerTarjeta), new { id }, id);
         }
-
-        [HttpGet("{id}/export/pdf")]
-        public async Task<IActionResult> ExportarEstadoCuentaPdf(int id, [FromServices] PdfService pdfService)
-        {
-            var estadoCuenta = await _mediator.Send(new GetEstadoCuentaByTarjetaQuery(id));
-            if (estadoCuenta == null) return NotFound();
-            
-            var estadoCuentaDTO = _mapper.Map<EstadoCuentaDTO>(estadoCuenta);
-            if (estadoCuentaDTO == null) return NotFound();
-
-            var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
-            var pdfBytes = pdfService.GenerarEstadoCuentaPdf(estadoCuentaDTO, transacciones);
-
-            return File(pdfBytes, "application/pdf", $"EstadoCuenta_{estadoCuenta.Titular}.pdf");
-        }
-
-        [HttpGet("{id}/export/excel")]
-        public async Task<IActionResult> ExportarEstadoCuentaExcel(int id, [FromServices] ExcelService excelService)
-        {
-            var estadoCuenta = await _mediator.Send(new GetEstadoCuentaByTarjetaQuery(id));
-            if (estadoCuenta == null) return NotFound();
-
-            var estadoCuentaDTO = _mapper.Map<EstadoCuentaDTO>(estadoCuenta);
-            if (estadoCuentaDTO == null) return NotFound();
-
-            var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
-            var excelBytes = excelService.GenerarEstadoCuentaExcel(estadoCuentaDTO, transacciones);
-
-            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EstadoCuenta_{estadoCuenta.Titular}.xlsx");
-        }
     }
 }

@@ -50,8 +50,8 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<TarjetaCreditoValidator>();
 });
-builder.Services.AddScoped<PdfService>();
-builder.Services.AddScoped<ExcelService>();
+builder.Services.AddScoped<IExportService, ExportService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
