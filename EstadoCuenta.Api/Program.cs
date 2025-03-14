@@ -42,6 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITarjetaCreditoRepository, TarjetaCreditoRepository>();
 builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>();
+builder.Services.AddScoped<IEstadoCuentaRepository, EstadoCuentaRepository>();
 
 builder.Services.AddMediatR(typeof(GetTarjetaByIdQuery).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));

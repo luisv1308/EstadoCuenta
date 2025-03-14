@@ -5,7 +5,7 @@ namespace EstadoCuenta.Api.Services
 {
     public class ExcelService
     {
-        public byte[] GenerarEstadoCuentaExcel(TarjetaCreditoDTO tarjetaCredito, IEnumerable<TransaccionDTO> transacciones)
+        public byte[] GenerarEstadoCuentaExcel(EstadoCuentaDTO estadoCuenta, IEnumerable<TransaccionDTO> transacciones)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -14,23 +14,23 @@ namespace EstadoCuenta.Api.Services
                 var worksheet = package.Workbook.Worksheets.Add("Estado de Cuenta");
 
                 worksheet.Cells["A1"].Value = "Titular";
-                worksheet.Cells["B1"].Value = tarjetaCredito.Titular;
+                worksheet.Cells["B1"].Value = estadoCuenta.Titular;
                 worksheet.Cells["A2"].Value = "Numero de Tarjeta";
-                worksheet.Cells["B2"].Value = tarjetaCredito.NumeroTarjeta;
+                worksheet.Cells["B2"].Value = estadoCuenta.NumeroTarjeta;
                 worksheet.Cells["A3"].Value = "Saldo Actual";
-                worksheet.Cells["B3"].Value = Math.Round(tarjetaCredito.SaldoActual, 2);
+                worksheet.Cells["B3"].Value = Math.Round(estadoCuenta.SaldoActual, 2);
                 worksheet.Cells["A4"].Value = "Limite de Credito";
-                worksheet.Cells["B4"].Value = Math.Round(tarjetaCredito.LimiteCredito, 2);
+                worksheet.Cells["B4"].Value = Math.Round(estadoCuenta.LimiteCredito, 2);
 
                 // Calculos
                 worksheet.Cells["A6"].Value = "Interés Bonificable";
-                worksheet.Cells["B6"].Value = Math.Round(tarjetaCredito.InteresBonificable, 2);
+                worksheet.Cells["B6"].Value = Math.Round(estadoCuenta.InteresBonificable, 2);
                 worksheet.Cells["A7"].Value = "Cuota Mínima a Pagar";
-                worksheet.Cells["B7"].Value = Math.Round(tarjetaCredito.CuotaMinimaPagar, 2);
+                worksheet.Cells["B7"].Value = Math.Round(estadoCuenta.CuotaMinimaPagar, 2);
                 worksheet.Cells["A8"].Value = "Monto Total a Pagar";
-                worksheet.Cells["B8"].Value = Math.Round(tarjetaCredito.MontoTotalPagar, 2);
+                worksheet.Cells["B8"].Value = Math.Round(estadoCuenta.MontoTotalPagar, 2);
                 worksheet.Cells["A9"].Value = "Pago de Contado con Intereses";
-                worksheet.Cells["B9"].Value = Math.Round(tarjetaCredito.PagoContadoConIntereses, 2);
+                worksheet.Cells["B9"].Value = Math.Round(estadoCuenta.PagoContadoConIntereses, 2);
 
                 worksheet.Cells["A11"].Value = "Fecha";
                 worksheet.Cells["B11"].Value = "Descripcion";

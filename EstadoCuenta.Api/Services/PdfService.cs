@@ -6,7 +6,7 @@ namespace EstadoCuenta.Api.Services
 {
     public class PdfService
     {
-        public byte[] GenerarEstadoCuentaPdf(TarjetaCreditoDTO tarjetaCredito, IEnumerable<TransaccionDTO> transacciones)
+        public byte[] GenerarEstadoCuentaPdf(EstadoCuentaDTO estadoCuenta, IEnumerable<TransaccionDTO> transacciones)
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -15,17 +15,17 @@ namespace EstadoCuenta.Api.Services
 
                 document.Open();
 
-                document.Add(new Paragraph($"Estado de cuenta -  {tarjetaCredito.Titular}"));
-                document.Add(new Paragraph($"Número de tarjeta: {tarjetaCredito.NumeroTarjeta}"));
-                document.Add(new Paragraph($"Saldo actual: {tarjetaCredito.SaldoActual}"));
-                document.Add(new Paragraph($"Límite de crédito: {tarjetaCredito.LimiteCredito}"));
+                document.Add(new Paragraph($"Estado de cuenta -  {estadoCuenta.Titular}"));
+                document.Add(new Paragraph($"Número de tarjeta: {estadoCuenta.NumeroTarjeta}"));
+                document.Add(new Paragraph($"Saldo actual: {estadoCuenta.SaldoActual}"));
+                document.Add(new Paragraph($"Límite de crédito: {estadoCuenta.LimiteCredito}"));
                 document.Add(new Paragraph("\n"));
 
                 // Calculos
-                document.Add(new Paragraph($"Interés Bonificable: ${tarjetaCredito.InteresBonificable:F2}"));
-                document.Add(new Paragraph($"Cuota Mínima a Pagar: ${tarjetaCredito.CuotaMinimaPagar:F2}"));
-                document.Add(new Paragraph($"Monto Total a Pagar: ${tarjetaCredito.MontoTotalPagar:F2}"));
-                document.Add(new Paragraph($"Pago de Contado con Intereses: ${tarjetaCredito.PagoContadoConIntereses:F2}"));
+                document.Add(new Paragraph($"Interés Bonificable: ${estadoCuenta.InteresBonificable:F2}"));
+                document.Add(new Paragraph($"Cuota Mínima a Pagar: ${estadoCuenta.CuotaMinimaPagar:F2}"));
+                document.Add(new Paragraph($"Monto Total a Pagar: ${estadoCuenta.MontoTotalPagar:F2}"));
+                document.Add(new Paragraph($"Pago de Contado con Intereses: ${estadoCuenta.PagoContadoConIntereses:F2}"));
                 document.Add(new Paragraph("\n"));
 
                 // Creando tabla de transacciones

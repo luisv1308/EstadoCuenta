@@ -9,26 +9,15 @@ namespace EstadoCuenta.Api.Repositories
     public class TarjetaCreditoRepository : ITarjetaCreditoRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IDbConnection _dbConnection;
 
-        public TarjetaCreditoRepository(ApplicationDbContext context, IDbConnection dbConnection)
+        public TarjetaCreditoRepository(ApplicationDbContext context)
         {
             _context = context;
-            _dbConnection = dbConnection;
         }
 
         public async Task<TarjetaCredito?> ObtenerPorIdAsync(int id)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@TarjetaId", id);
-
-            var tarjeta = await _dbConnection.QueryFirstOrDefaultAsync<TarjetaCredito>(
-                "sp_ObtenerEstadoCuenta",
-                parameters,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return tarjeta;
+            return await _context.TarjetasCredito.FirstOrDefaultAsync(tc => tc.Id == id);
         }
 
         public async Task<IEnumerable<TarjetaCredito>> ObtenerTodosAsync()

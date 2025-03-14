@@ -7,12 +7,14 @@ namespace EstadoCuenta.Api.Repositories
         private readonly ApplicationDbContext _context;
         public ITarjetaCreditoRepository TarjetasCredito { get; }
         public ITransaccionRepository Transacciones { get; }
+        public IEstadoCuentaRepository EstadoCuenta { get; }
 
-        public UnitOfWork(ApplicationDbContext context, ITarjetaCreditoRepository tarjetasCreditoRepository, ITransaccionRepository transaccionesRepository)
+        public UnitOfWork(ApplicationDbContext context, ITarjetaCreditoRepository tarjetasCreditoRepository, ITransaccionRepository transaccionesRepository, IEstadoCuentaRepository estadoCuenta)
         {
             _context = context;
             TarjetasCredito = tarjetasCreditoRepository;
             Transacciones = transaccionesRepository;
+            EstadoCuenta = estadoCuenta;
         }
 
         public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();

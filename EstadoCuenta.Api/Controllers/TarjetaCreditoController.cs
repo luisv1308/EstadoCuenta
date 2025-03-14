@@ -53,31 +53,31 @@ namespace EstadoCuenta.Api.Controllers
         [HttpGet("{id}/export/pdf")]
         public async Task<IActionResult> ExportarEstadoCuentaPdf(int id, [FromServices] PdfService pdfService)
         {
-            var tarjeta = await _mediator.Send(new GetTarjetaByIdQuery(id));
-            if (tarjeta == null) return NotFound();
+            var estadoCuenta = await _mediator.Send(new GetEstadoCuentaByTarjetaQuery(id));
+            if (estadoCuenta == null) return NotFound();
             
-            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
-            if (tarjetaDTO == null) return NotFound();
+            var estadoCuentaDTO = _mapper.Map<EstadoCuentaDTO>(estadoCuenta);
+            if (estadoCuentaDTO == null) return NotFound();
 
             var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
-            var pdfBytes = pdfService.GenerarEstadoCuentaPdf(tarjetaDTO, transacciones);
+            var pdfBytes = pdfService.GenerarEstadoCuentaPdf(estadoCuentaDTO, transacciones);
 
-            return File(pdfBytes, "application/pdf", $"EstadoCuenta_{tarjeta.Titular}.pdf");
+            return File(pdfBytes, "application/pdf", $"EstadoCuenta_{estadoCuenta.Titular}.pdf");
         }
 
         [HttpGet("{id}/export/excel")]
         public async Task<IActionResult> ExportarEstadoCuentaExcel(int id, [FromServices] ExcelService excelService)
         {
-            var tarjeta = await _mediator.Send(new GetTarjetaByIdQuery(id));
-            if (tarjeta == null) return NotFound();
+            var estadoCuenta = await _mediator.Send(new GetEstadoCuentaByTarjetaQuery(id));
+            if (estadoCuenta == null) return NotFound();
 
-            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
-            if (tarjetaDTO == null) return NotFound();
+            var estadoCuentaDTO = _mapper.Map<EstadoCuentaDTO>(estadoCuenta);
+            if (estadoCuentaDTO == null) return NotFound();
 
             var transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(id));
-            var excelBytes = excelService.GenerarEstadoCuentaExcel(tarjetaDTO, transacciones);
+            var excelBytes = excelService.GenerarEstadoCuentaExcel(estadoCuentaDTO, transacciones);
 
-            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EstadoCuenta_{tarjeta.Titular}.xlsx");
+            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EstadoCuenta_{estadoCuenta.Titular}.xlsx");
         }
     }
 }
