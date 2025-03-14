@@ -42,7 +42,7 @@ namespace EstadoCuenta.Web.Controllers
             transaccion.TarjetaCreditoId = 1;
             transaccion.Tipo = "Compra";
 
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Transaccion", transaccion);
+            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Compras", transaccion);
             if (!response.IsSuccessStatusCode)
             {
                 ModelState.AddModelError(string.Empty, "Error al agregar la compra.");

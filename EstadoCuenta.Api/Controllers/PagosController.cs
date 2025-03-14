@@ -2,6 +2,7 @@
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.DTOs;
 using EstadoCuenta.Api.Hubs;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,11 +15,13 @@ namespace EstadoCuenta.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IHubContext<TransaccionesHub> _hubContext;
+        private readonly IValidator<TransaccionDTO> _validator;
 
-        public PagosController(IMediator mediator, IHubContext<TransaccionesHub> hubContext)
+        public PagosController(IMediator mediator, IHubContext<TransaccionesHub> hubContext, IValidator<TransaccionDTO> validator)
         {
             _mediator = mediator;
             _hubContext = hubContext;
+            _validator = validator;
         }
 
         [HttpGet("{tarjetaId}")]
@@ -31,8 +34,9 @@ namespace EstadoCuenta.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AgregarPago([FromBody] TransaccionDTO transaccion)
         {
-            if (transaccion == null)
-                return BadRequest("Datos inválidos.");
+            var validationResult = await _validator.ValidateAsync(transaccion);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
             transaccion.Tipo = "Pago";
             var command = new CreateTransaccionCommand(transaccion.TarjetaCreditoId, transaccion.Descripcion, transaccion.Monto, transaccion.Fecha, transaccion.Tipo);

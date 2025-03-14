@@ -43,7 +43,7 @@ namespace EstadoCuenta.Web.Controllers
             transaccion.TarjetaCreditoId = 1;
             transaccion.Tipo = "Pago"; 
 
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Transaccion", transaccion);
+            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Pagos", transaccion);
             if (!response.IsSuccessStatusCode)
             {
                 ModelState.AddModelError(string.Empty, "Error al agregar el pago.");
