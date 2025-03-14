@@ -27,5 +27,10 @@ namespace EstadoCuenta.Api.Controllers
 
             return Ok(estadoCuentaDTO);
         }
+        [HttpGet("prueba-error")]
+        public IActionResult ForzarError()
+        {
+            throw new Exception("Este es un error forzado para probar GlobalExceptions.");
+        }
     }
 }

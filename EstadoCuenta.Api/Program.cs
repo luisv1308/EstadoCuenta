@@ -96,6 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<EstadoCuenta.Api.Middleware.GlobalExceptionHandlerMiddleware>();
 app.UseAuthorization();
 app.MapHub<TransaccionesHub>("/transaccionesHub").RequireCors("AllowFrontend");
 
