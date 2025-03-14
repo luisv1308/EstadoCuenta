@@ -1,4 +1,55 @@
-﻿@page
-@model EstadoCuenta.Web.Views.Historial.IndexModel
-@{
+﻿@{
+    ViewData["Title"] = "Transacciones en Tiempo Real";
 }
+
+<div class="p-6 bg-gray-100 min-h-screen">
+    <div class="bg-white shadow-lg p-6 rounded-lg">
+        <h1 class="text-2xl font-bold text-blue-600">Transacciones en Tiempo Real</h1>
+
+        <!-- Tabla de transacciones -->
+        <table class="w-full mt-4 bg-white shadow-md rounded-lg">
+            <thead>
+                <tr class="bg-blue-600 text-white">
+                    <th class="p-3 text-left">Fecha</th>
+                    <th class="p-3 text-left">Descripción</th>
+                    <th class="p-3 text-left">Monto</th>
+                    <th class="p-3 text-left">Tipo</th>
+                </tr>
+            </thead>
+            <tbody id="transacciones-body">
+                <!-- Aquí se insertarán las transacciones en tiempo real -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    // Conectar con SignalR
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7264/transaccionesHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    // Recibir transacciones en tiempo real
+    connection.on("RecibirTransaccion", function (transaccion) {
+        const tbody = document.getElementById("transacciones-body");
+
+        const row = document.createElement("tr");
+        row.className = "border-t";
+
+        row.innerHTML = `
+            <td class="p-3">${new Date(transaccion.fecha).toLocaleDateString()}</td>
+            <td class="p-3">${transaccion.descripcion}</td>
+            <td class="p-3 text-${transaccion.tipo === "Compra" ? "red" : "green"}-600">$${transaccion.monto.toFixed(2)}</td>
+            <td class="p-3">${transaccion.tipo}</td>
+        `;
+
+        tbody.prepend(row); // Agregar la nueva transacción al inicio de la tabla
+    });
+
+    // Iniciar conexión
+    connection.start().catch(function (err) {
+        console.error(err.toString());
+    });
+</script>
