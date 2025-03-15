@@ -34,6 +34,7 @@ namespace EstadoCuenta.Api.Services
                 document.Add(new Paragraph($"Número de tarjeta: {estadoCuenta.NumeroTarjeta}"));
                 document.Add(new Paragraph($"Saldo actual: {estadoCuenta.SaldoActual}"));
                 document.Add(new Paragraph($"Límite de crédito: {estadoCuenta.LimiteCredito}"));
+                document.Add(new Paragraph($"Saldo disponible: {estadoCuenta.SaldoDisponible}"));
                 document.Add(new Paragraph($"Total Mes Actual: ${estadoCuenta.TotalMesActual}"));
                 document.Add(new Paragraph($"Total Mes Anterior: ${estadoCuenta.TotalMesAnterior}"));
                 document.Add(new Paragraph("\n"));
@@ -86,26 +87,28 @@ namespace EstadoCuenta.Api.Services
                 worksheet.Cells["B3"].Value = Math.Round(estadoCuenta.SaldoActual, 2);
                 worksheet.Cells["A4"].Value = "Limite de Credito";
                 worksheet.Cells["B4"].Value = Math.Round(estadoCuenta.LimiteCredito, 2);
+                worksheet.Cells["A5"].Value = "Saldo Disponible";
+                worksheet.Cells["B5"].Value = Math.Round(estadoCuenta.SaldoDisponible, 2);
 
-                worksheet.Cells["A5"].Value = "Total Mes Actual";
-                worksheet.Cells["B5"].Value = Math.Round(estadoCuenta.TotalMesActual, 2);
-                worksheet.Cells["A6"].Value = "Total Mes Anterior";
-                worksheet.Cells["B6"].Value = Math.Round(estadoCuenta.TotalMesAnterior, 2);
+                worksheet.Cells["A6"].Value = "Total Mes Actual";
+                worksheet.Cells["B6"].Value = Math.Round(estadoCuenta.TotalMesActual, 2);
+                worksheet.Cells["A7"].Value = "Total Mes Anterior";
+                worksheet.Cells["B7"].Value = Math.Round(estadoCuenta.TotalMesAnterior, 2);
 
                 // Calculos
-                worksheet.Cells["A8"].Value = "Interés Bonificable";
-                worksheet.Cells["B8"].Value = Math.Round(estadoCuenta.InteresBonificable, 2);
-                worksheet.Cells["A9"].Value = "Cuota Mínima a Pagar";
-                worksheet.Cells["B9"].Value = Math.Round(estadoCuenta.CuotaMinimaPagar, 2);
-                worksheet.Cells["A10"].Value = "Monto Total a Pagar";
-                worksheet.Cells["B10"].Value = Math.Round(estadoCuenta.MontoTotalPagar, 2);
-                worksheet.Cells["A11"].Value = "Pago de Contado con Intereses";
-                worksheet.Cells["B11"].Value = Math.Round(estadoCuenta.PagoContadoConIntereses, 2);
+                worksheet.Cells["A9"].Value = "Interés Bonificable";
+                worksheet.Cells["B9"].Value = Math.Round(estadoCuenta.InteresBonificable, 2);
+                worksheet.Cells["A10"].Value = "Cuota Mínima a Pagar";
+                worksheet.Cells["B10"].Value = Math.Round(estadoCuenta.CuotaMinimaPagar, 2);
+                worksheet.Cells["A11"].Value = "Monto Total a Pagar";
+                worksheet.Cells["B11"].Value = Math.Round(estadoCuenta.MontoTotalPagar, 2);
+                worksheet.Cells["A12"].Value = "Pago de Contado con Intereses";
+                worksheet.Cells["B12"].Value = Math.Round(estadoCuenta.PagoContadoConIntereses, 2);
 
-                worksheet.Cells["A13"].Value = "Fecha";
-                worksheet.Cells["B13"].Value = "Descripcion";
-                worksheet.Cells["C13"].Value = "Monto";
-                worksheet.Cells["D13"].Value = "Tipo";
+                worksheet.Cells["A14"].Value = "Fecha";
+                worksheet.Cells["B14"].Value = "Descripcion";
+                worksheet.Cells["C14"].Value = "Monto";
+                worksheet.Cells["D14"].Value = "Tipo";
 
                 int row = 14;
                 foreach (var transaccion in estadoCuenta.Compras)
