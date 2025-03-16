@@ -1,6 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+using EstadoCuenta.Web.Models;
+using Microsoft.Extensions.Configuration;
 
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 // Add services to the container.
+builder.Services.Configure<ApiSettings>(configuration.GetSection("ApiSettings"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 

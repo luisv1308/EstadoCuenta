@@ -1,6 +1,7 @@
 ﻿using EstadoCuenta.Web.Helpers;
 using EstadoCuenta.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -10,15 +11,17 @@ namespace EstadoCuenta.Web.Controllers
     public class ComprasController : Controller
     {
         public readonly HttpClient _httpClient;
+        private readonly string _apiBaseUrl;
 
-        public ComprasController(HttpClient httpClient)
+        public ComprasController(HttpClient httpClient, IOptions<ApiSettings> apisettings)
         {
             _httpClient = httpClient;
+            _apiBaseUrl = apisettings.Value.BaseUrl;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = _httpClient.GetAsync("https://localhost:7264/api/Compras/1");
+            var response = _httpClient.GetAsync($"{_apiBaseUrl}api/Compras/1");
             if (!response.Result.IsSuccessStatusCode)
             {
                 return View(new List<CompraViewModel>());
@@ -42,7 +45,7 @@ namespace EstadoCuenta.Web.Controllers
             }
             transaccion.TarjetaCreditoId = 1;
 
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Compras", transaccion);
+            var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}api/Compras", transaccion);
             if (!response.IsSuccessStatusCode)
             {
                 await ModelState.ProcesarErroresApi(response);
@@ -54,7 +57,7 @@ namespace EstadoCuenta.Web.Controllers
 
         private async Task<List<CompraViewModel>> ObtenerCompras()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7264/api/Compras/1");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}api/Compras/1");
             if (!response.IsSuccessStatusCode)
             {
                 return new List<CompraViewModel>();

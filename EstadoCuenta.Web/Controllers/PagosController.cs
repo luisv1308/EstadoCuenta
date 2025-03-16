@@ -4,21 +4,24 @@ using System.Text.Json;
 using System.Text;
 using System.Net.Http;
 using EstadoCuenta.Web.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace EstadoCuenta.Web.Controllers
 {
     public class PagosController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly string _apiBaseUrl;
 
-        public PagosController(HttpClient httpClient)
+        public PagosController(HttpClient httpClient, IOptions<ApiSettings> apisettings)
         {
             _httpClient = httpClient;
+            _apiBaseUrl = apisettings.Value.BaseUrl;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7264/api/Pagos/1"); 
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}api/Pagos/1"); 
             if (!response.IsSuccessStatusCode)
             {
                 return View(new List<PagoViewModel>());
@@ -43,7 +46,7 @@ namespace EstadoCuenta.Web.Controllers
 
             transaccion.TarjetaCreditoId = 1;
 
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Pagos", transaccion);
+            var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}api/Pagos", transaccion);
             if (!response.IsSuccessStatusCode)
             {
                 await ModelState.ProcesarErroresApi(response);
@@ -55,7 +58,7 @@ namespace EstadoCuenta.Web.Controllers
 
         private async Task<List<PagoViewModel>> ObtenerPagos()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7264/api/Pagos/1");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}api/Pagos/1");
             if (!response.IsSuccessStatusCode)
             {
                 return new List<PagoViewModel>();

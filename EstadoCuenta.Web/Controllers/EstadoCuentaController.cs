@@ -1,5 +1,6 @@
 ﻿using EstadoCuenta.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace EstadoCuenta.Web.Controllers
@@ -7,15 +8,17 @@ namespace EstadoCuenta.Web.Controllers
     public class EstadoCuentaController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly string _apiBaseUrl;
 
-        public EstadoCuentaController(HttpClient httpClient)
+        public EstadoCuentaController(HttpClient httpClient, IOptions<ApiSettings> apisettings)
         {
             _httpClient = httpClient;
+            _apiBaseUrl = apisettings.Value.BaseUrl;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = _httpClient.GetAsync("https://localhost:7264/api/EstadoCuenta/1");
+            var response = _httpClient.GetAsync($"{_apiBaseUrl}api/EstadoCuenta/1");
             if (!response.Result.IsSuccessStatusCode)
             {
                 return View(new EstadoCuentaViewModel());
@@ -33,7 +36,7 @@ namespace EstadoCuenta.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ExportarPdf(int id)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7264/api/Export/pdf/{id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}api/Export/pdf/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -47,7 +50,7 @@ namespace EstadoCuenta.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ExportarExcel(int id)
         {
-            var response = await _httpClient.GetAsync($"https://localhost:7264/api/Export/excel/{id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}api/Export/excel/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
