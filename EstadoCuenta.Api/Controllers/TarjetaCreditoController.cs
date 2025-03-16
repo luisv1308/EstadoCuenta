@@ -16,12 +16,10 @@ namespace EstadoCuenta.Api.Controllers
     {
 
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
        
-        public TarjetaCreditoController(IMediator mediator, IMapper mapper)
+        public TarjetaCreditoController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -31,9 +29,7 @@ namespace EstadoCuenta.Api.Controllers
             if (tarjeta == null)
                 return NotFound();
 
-            var tarjetaDTO = _mapper.Map<TarjetaCreditoDTO>(tarjeta);
-
-            return Ok(tarjetaDTO);
+            return Ok(tarjeta);
         }
 
         [HttpPost]
