@@ -10,8 +10,7 @@
         <!-- Mostrar Sumarry Error -->
         @if (!ViewData.ModelState.IsValid)
         {
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
-                <strong class="font-bold">Error:</strong>
+            <div class="bg-red-500 text-white p-3 rounded-md mb-4">
                 <ul>
                     @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                     {
@@ -21,7 +20,8 @@
             </div>
         }
         <!-- Formulario para agregar pago -->
-        <form asp-action="AgregarPago" method="post" class="mt-4 space-y-4">
+        <form asp-action="Agregar" method="post" class="mt-4 space-y-4">
+            <input type="hidden" asp-for="@(new EstadoCuenta.Web.Models.CompraViewModel().TarjetaCreditoId)" value="1" />
             <div>
                 <label for="Monto" class="block text-gray-700 font-bold">Monto</label>
                 <input type="number" asp-for="@(new PagoViewModel().Monto)" class="w-full p-2 border rounded-lg">

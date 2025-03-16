@@ -51,9 +51,11 @@
             responsive: true
         });
 
+        const apiBaseUrl = document.querySelector("meta[name='api-base-url']").getAttribute("content");
+
         // Conectar con SignalR
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7264/transaccionesHub")
+            .withUrl(`${apiBaseUrl}transaccionesHub`)
             .configureLogging(signalR.LogLevel.Information)
             .build();
 

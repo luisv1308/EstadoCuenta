@@ -10,15 +10,18 @@ namespace EstadoCuenta.Web.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
+        private readonly IConfiguration _configuration;
 
-        public HistorialController(HttpClient httpClient, IOptions<ApiSettings> apisettings)
+        public HistorialController(HttpClient httpClient, IOptions<ApiSettings> apisettings, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _apiBaseUrl = apisettings.Value.BaseUrl;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
+            ViewData["ApiBaseUrl"] = _configuration["ApiSettings:BaseUrl"];
             return View();
         }
 
