@@ -9,7 +9,7 @@ namespace EstadoCuenta.Web.Models
         [Required]
         public int TarjetaCreditoId { get; set; }
         [Required]
-        [Range(0.01, 10000, ErrorMessage = "El monto debe ser mayor a 0.")]
+        [Range(1, 10000, ErrorMessage = "El monto debe ser mayor a 0.")]
         public decimal Monto { get; set; }
         [Required]
         [FechaNoFutura]

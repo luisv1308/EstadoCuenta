@@ -22,17 +22,19 @@ namespace EstadoCuenta.Web.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationModelFilter))]
+        [ServiceFilter(typeof(HandleApiErrorFilter))]
         public async Task<IActionResult> Agregar(TViewModel transaccion)
         {
+            
             var result = await _transaccionService.AgregarTransaccion(transaccion);
-            if (result.Exitoso)
+            if (!result.Exitoso)
             {
-                return RedirectToAction("Index");
+                return new BadRequestObjectResult(result);
             }
-            else
-            {
-                return View("Index", await _transaccionService.ObtenerTransacciones());
-            }
+
+
+            return RedirectToAction("Index");
         }
     }
 }

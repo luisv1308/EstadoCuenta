@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ITransaccionService<CompraViewModel>, ComprasService>();
 builder.Services.AddScoped<ITransaccionService<PagoViewModel>, PagosService>();
-builder.Services.AddScoped<HandleErrorFilter>();
+builder.Services.AddScoped<HandleApiErrorFilter>();
 builder.Services.AddScoped<ValidationModelFilter>();
 
 var app = builder.Build();
