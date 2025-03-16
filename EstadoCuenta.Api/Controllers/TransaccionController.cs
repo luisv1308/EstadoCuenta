@@ -16,15 +16,11 @@ namespace EstadoCuenta.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly IValidator<TransaccionDTO> _validator;
-        private readonly IHubContext<TransaccionesHub> _hubContext;
 
-        public TransaccionController(IMediator mediator, IMapper mapper, IValidator<TransaccionDTO> validator, IHubContext<TransaccionesHub> hubContext)
+        public TransaccionController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
-            _validator = validator;
-            _hubContext = hubContext;
         }
 
         [HttpGet("{tarjetaId}")]

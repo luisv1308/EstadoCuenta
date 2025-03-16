@@ -1,7 +1,9 @@
 ﻿using EstadoCuenta.Api.CQRS.Commands;
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.DTOs;
+using EstadoCuenta.Api.Filters;
 using EstadoCuenta.Api.Hubs;
+using EstadoCuenta.Api.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +16,14 @@ namespace EstadoCuenta.Api.Controllers
     public class ComprasController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IHubContext<TransaccionesHub> _hubContext;
-        private readonly IValidator<ComprasDTO> _validator;
+        private readonly TransaccionNotificationService _notificationService;
 
-        public ComprasController(IMediator mediator, IHubContext<TransaccionesHub> hubContext, IValidator<ComprasDTO> validator)
+        public ComprasController(IMediator mediator, 
+            TransaccionNotificationService notificationService
+        )
         {
             _mediator = mediator;
-            _hubContext = hubContext;
-            _validator = validator;
+            _notificationService = notificationService;
         }
 
         [HttpGet("{tarjetaId}")]
@@ -32,19 +34,16 @@ namespace EstadoCuenta.Api.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilter<ComprasDTO>))]
         public async Task<IActionResult> AgregarCompra([FromBody] ComprasDTO transaccion)
         {
-            var validationResult = await _validator.ValidateAsync(transaccion);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             transaccion.Tipo = "Compra";
             var command = new CreateCompraCommand(transaccion.TarjetaCreditoId, transaccion.Descripcion, transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
             var transaccionId = await _mediator.Send(command);
 
             transaccion.Id = transaccionId;
             
-            await _hubContext.Clients.All.SendAsync("RecibirTransaccion", transaccion);
+            await _notificationService.NotificarNuevaCompra(transaccion);
 
             return Ok(transaccion);
         }

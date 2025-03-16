@@ -11,11 +11,9 @@ namespace EstadoCuenta.Api.Controllers
     public class EstadoCuentaController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-        public EstadoCuentaController(IMediator mediator, IMapper mapper)
+        public EstadoCuentaController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
         [HttpGet("{tarjetaId}")]
         public async Task<IActionResult> ObtenerEstadoCuenta(int tarjetaId)
@@ -23,9 +21,8 @@ namespace EstadoCuenta.Api.Controllers
             var estadoCuenta = await _mediator.Send(new GetEstadoCuentaByTarjetaQuery(tarjetaId));
             if (estadoCuenta == null)
                 return NotFound();
-            var estadoCuentaDTO = _mapper.Map<EstadoCuentaDTO>(estadoCuenta);
 
-            return Ok(estadoCuentaDTO);
+            return Ok(estadoCuenta);
         }
         [HttpGet("prueba-error")]
         public IActionResult ForzarError()

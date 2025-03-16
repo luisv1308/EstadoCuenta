@@ -1,7 +1,9 @@
 ﻿using EstadoCuenta.Api.CQRS.Commands;
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.DTOs;
+using EstadoCuenta.Api.Filters;
 using EstadoCuenta.Api.Hubs;
+using EstadoCuenta.Api.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +16,14 @@ namespace EstadoCuenta.Api.Controllers
     public class PagosController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IHubContext<TransaccionesHub> _hubContext;
-        private readonly IValidator<PagosDTO> _validator;
+        private readonly TransaccionNotificationService _notificationService;
 
-        public PagosController(IMediator mediator, IHubContext<TransaccionesHub> hubContext, IValidator<PagosDTO> validator)
+        public PagosController(IMediator mediator,
+            TransaccionNotificationService notificationService
+        )
         {
             _mediator = mediator;
-            _hubContext = hubContext;
-            _validator = validator;
+            _notificationService = notificationService;
         }
 
         [HttpGet("{tarjetaId}")]
@@ -32,19 +34,16 @@ namespace EstadoCuenta.Api.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilter<PagosDTO>))]
         public async Task<IActionResult> AgregarPago([FromBody] PagosDTO transaccion)
         {
-            var validationResult = await _validator.ValidateAsync(transaccion);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             transaccion.Tipo = "Pago";
             var command = new CreatePagoCommand(transaccion.TarjetaCreditoId, "Pago a tarjeta", transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
             var transaccionId = await _mediator.Send(command);
 
             transaccion.Id = transaccionId;
 
-            await _hubContext.Clients.All.SendAsync("RecibirTransaccion", transaccion);
+            await _notificationService.NotificarNuevoPago(transaccion);
 
             return Ok(transaccion);
         }

@@ -2,6 +2,7 @@
 using EstadoCuenta.Api.CQRS.Commands;
 using EstadoCuenta.Api.CQRS.Queries;
 using EstadoCuenta.Api.DTOs;
+using EstadoCuenta.Api.Filters;
 using EstadoCuenta.Api.Services;
 using FluentValidation;
 using MediatR;
@@ -16,13 +17,11 @@ namespace EstadoCuenta.Api.Controllers
 
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly IValidator<TarjetaCreditoDTO> _validator;
        
-        public TarjetaCreditoController(IMediator mediator, IMapper mapper, IValidator<TarjetaCreditoDTO> validator)
+        public TarjetaCreditoController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
-            _validator = validator;
         }
 
         [HttpGet("{id}")]
@@ -38,12 +37,9 @@ namespace EstadoCuenta.Api.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilter<TarjetaCreditoDTO>))]
         public async Task<IActionResult> CrearTarjeta([FromBody] TarjetaCreditoDTO tarjetaDTO)
         {
-            var validationResult = await _validator.ValidateAsync(tarjetaDTO);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var command = new CreateTarjetaCommand(tarjetaDTO.Titular, tarjetaDTO.NumeroTarjeta, tarjetaDTO.LimiteCredito);
             var id = await _mediator.Send(command);
 

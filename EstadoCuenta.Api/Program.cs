@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Data;
 using HealthChecks.UI.Client;
+using EstadoCuenta.Api.Filters;
 
 
 
@@ -65,6 +66,9 @@ builder.Services.AddCors(options =>
             .AllowCredentials()); 
 });
 builder.Services.AddSignalR();
+builder.Services.AddScoped(typeof(ValidationFilter<>));
+builder.Services.AddScoped<TransaccionNotificationService>();
+
 
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
