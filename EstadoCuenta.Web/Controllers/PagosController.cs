@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text;
 using System.Net.Http;
+using EstadoCuenta.Web.Helpers;
 
 namespace EstadoCuenta.Web.Controllers
 {
@@ -20,11 +21,11 @@ namespace EstadoCuenta.Web.Controllers
             var response = await _httpClient.GetAsync("https://localhost:7264/api/Pagos/1"); 
             if (!response.IsSuccessStatusCode)
             {
-                return View(new List<TransaccionViewModel>());
+                return View(new List<PagoViewModel>());
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var pagos = JsonSerializer.Deserialize<List<TransaccionViewModel>>(json, new JsonSerializerOptions
+            var pagos = JsonSerializer.Deserialize<List<PagoViewModel>>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
@@ -33,7 +34,7 @@ namespace EstadoCuenta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgregarPago(TransaccionViewModel transaccion)
+        public async Task<IActionResult> AgregarPago(PagoViewModel transaccion)
         {
             if (!ModelState.IsValid)
             {
@@ -41,33 +42,32 @@ namespace EstadoCuenta.Web.Controllers
             }
 
             transaccion.TarjetaCreditoId = 1;
-            transaccion.Tipo = "Pago"; 
 
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7264/api/Pagos", transaccion);
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError(string.Empty, "Error al agregar el pago.");
+                await ModelState.ProcesarErroresApi(response);
                 return View("Index", await ObtenerPagos());
             }
 
             return RedirectToAction("Index");
         }
 
-        private async Task<List<TransaccionViewModel>> ObtenerPagos()
+        private async Task<List<PagoViewModel>> ObtenerPagos()
         {
             var response = await _httpClient.GetAsync("https://localhost:7264/api/Pagos/1");
             if (!response.IsSuccessStatusCode)
             {
-                return new List<TransaccionViewModel>();
+                return new List<PagoViewModel>();
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var transacciones = JsonSerializer.Deserialize<List<TransaccionViewModel>>(json, new JsonSerializerOptions
+            var transacciones = JsonSerializer.Deserialize<List<PagoViewModel>>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
 
-            return transacciones ?? new List<TransaccionViewModel>();
+            return transacciones ?? new List<PagoViewModel>();
         }
     }
 }

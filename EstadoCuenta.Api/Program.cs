@@ -39,10 +39,13 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API para manejar estados de cuenta de tarjetas de crédito"
     });
 });
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITarjetaCreditoRepository, TarjetaCreditoRepository>();
 builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>();
 builder.Services.AddScoped<IEstadoCuentaRepository, EstadoCuentaRepository>();
+builder.Services.AddScoped<IPagosRepository, PagosRepository>();
+builder.Services.AddScoped<IComprasRepository, ComprasRepository>();
 
 builder.Services.AddMediatR(typeof(GetTarjetaByIdQuery).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));

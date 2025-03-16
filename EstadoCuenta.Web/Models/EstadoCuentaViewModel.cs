@@ -13,6 +13,6 @@
         public decimal PagoContadoConIntereses { get; set; }
         public decimal TotalMesActual { get; set; }
         public decimal TotalMesAnterior { get; set; }
-        public List<TransaccionViewModel> Compras { get; set; } = new List<TransaccionViewModel>();
+        public List<CompraViewModel> Compras { get; set; } = new List<CompraViewModel>();
     }
 }

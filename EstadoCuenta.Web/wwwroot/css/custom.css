@@ -1,0 +1,10 @@
+﻿@media (prefers-color-scheme: dark) {
+    .dark\:bg-gray-800 {
+        background-color: white !important;
+        color: cornflowerblue;
+    }
+
+    .dark\:even\:bg-gray-900\/50:nth-child(even) {
+        background-color: rgb(161 170 187 / 50%) !important;
+    }
+}

@@ -8,13 +8,24 @@ namespace EstadoCuenta.Api.Repositories
         public ITarjetaCreditoRepository TarjetasCredito { get; }
         public ITransaccionRepository Transacciones { get; }
         public IEstadoCuentaRepository EstadoCuenta { get; }
+        public IPagosRepository Pagos { get; }
 
-        public UnitOfWork(ApplicationDbContext context, ITarjetaCreditoRepository tarjetasCreditoRepository, ITransaccionRepository transaccionesRepository, IEstadoCuentaRepository estadoCuenta)
+        public IComprasRepository Compras { get; }
+
+        public UnitOfWork(ApplicationDbContext context, 
+            ITarjetaCreditoRepository tarjetasCreditoRepository, 
+            ITransaccionRepository transaccionesRepository, 
+            IEstadoCuentaRepository estadoCuenta,
+            IPagosRepository pagos,
+            IComprasRepository compras
+        )
         {
             _context = context;
             TarjetasCredito = tarjetasCreditoRepository;
             Transacciones = transaccionesRepository;
             EstadoCuenta = estadoCuenta;
+            Pagos = pagos;
+            Compras = compras;
         }
 
         public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();

@@ -1,26 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using EstadoCuenta.Web.Validators;
+using System.ComponentModel.DataAnnotations;
 
-namespace EstadoCuenta.Api.Models
+namespace EstadoCuenta.Web.Models
 {
-    public class Transaccion
+    public class CompraViewModel
     {
-        [Key]
         public int Id { get; set; }
         [Required]
         public int TarjetaCreditoId { get; set; }
         [Required]
-        [StringLength(500)]
         public string Descripcion { get; set; } = string.Empty;
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
+        [Range(0.01, 10000, ErrorMessage = "El monto debe ser mayor a 0.")]
         public decimal Monto { get; set; }
         [Required]
+        [FechaNoFutura]
         public DateTime Fecha { get; set; }
-        [StringLength(10)]
         public string Tipo { get; set; } = string.Empty;
-
-        // Relacion con TarjetaCredito
-        public TarjetaCredito? TarjetaCredito { get; set; }
     }
 }

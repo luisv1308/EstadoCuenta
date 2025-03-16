@@ -26,7 +26,7 @@ namespace EstadoCuenta.Api.CQRS.Queries
         }
         public async Task<IEnumerable<TransaccionDTO>> Handle(GetPagosByTarjetaQuery request, CancellationToken cancellationToken)
         {
-            var pagos = await _unitOfWork.Transacciones.ObtenerPorTipoAsync(request.TarjetaId, "Pago");
+            var pagos = await _unitOfWork.Pagos.ObtenerPagosAsync(request.TarjetaId);
             return _mapper.Map<IEnumerable<TransaccionDTO>>(pagos);
         }
     }

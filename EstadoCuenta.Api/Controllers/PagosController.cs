@@ -15,9 +15,9 @@ namespace EstadoCuenta.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IHubContext<TransaccionesHub> _hubContext;
-        private readonly IValidator<TransaccionDTO> _validator;
+        private readonly IValidator<PagosDTO> _validator;
 
-        public PagosController(IMediator mediator, IHubContext<TransaccionesHub> hubContext, IValidator<TransaccionDTO> validator)
+        public PagosController(IMediator mediator, IHubContext<TransaccionesHub> hubContext, IValidator<PagosDTO> validator)
         {
             _mediator = mediator;
             _hubContext = hubContext;
@@ -32,14 +32,14 @@ namespace EstadoCuenta.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgregarPago([FromBody] TransaccionDTO transaccion)
+        public async Task<IActionResult> AgregarPago([FromBody] PagosDTO transaccion)
         {
             var validationResult = await _validator.ValidateAsync(transaccion);
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
             transaccion.Tipo = "Pago";
-            var command = new CreateTransaccionCommand(transaccion.TarjetaCreditoId, transaccion.Descripcion, transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
+            var command = new CreatePagoCommand(transaccion.TarjetaCreditoId, "Pago a tarjeta", transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
             var transaccionId = await _mediator.Send(command);
 
             transaccion.Id = transaccionId;

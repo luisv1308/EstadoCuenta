@@ -29,7 +29,7 @@ namespace EstadoCuenta.Web.Controllers
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var historial = JsonSerializer.Deserialize<List<TransaccionViewModel>>(json, new JsonSerializerOptions
+            var historial = JsonSerializer.Deserialize<List<CompraViewModel>>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });

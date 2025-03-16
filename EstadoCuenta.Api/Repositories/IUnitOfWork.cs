@@ -8,6 +8,8 @@ namespace EstadoCuenta.Api.Repositories
         ITarjetaCreditoRepository TarjetasCredito { get; }
         ITransaccionRepository Transacciones { get; }
         IEstadoCuentaRepository EstadoCuenta { get; }
+        IPagosRepository Pagos { get; }
+        IComprasRepository Compras { get; }
         Task<int> SaveChangesAsync();
     }
 }

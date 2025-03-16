@@ -1,4 +1,4 @@
-﻿@model List<EstadoCuenta.Web.Models.TransaccionViewModel>
+﻿@model List<EstadoCuenta.Web.Models.PagoViewModel>
 
 @{
     ViewData["Title"] = "Pagos";
@@ -7,23 +7,30 @@
 <div class="p-6 bg-gray-100 ">
     <div class="bg-white shadow-lg p-6 rounded-lg">
         <h1 class="text-2xl font-bold text-blue-600">Pagos</h1>
-
+        <!-- Mostrar Sumarry Error -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                <strong class="font-bold">Error:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
         <!-- Formulario para agregar pago -->
         <form asp-action="AgregarPago" method="post" class="mt-4 space-y-4">
             <div>
-                <label for="Descripcion" class="block text-gray-700 font-bold">Descripción</label>
-                <input type="text" asp-for="@(new TransaccionViewModel().Descripcion)" class="w-full p-2 border rounded-lg">
-                <span asp-validation-for="@(new TransaccionViewModel().Descripcion)" class="text-red-500"></span>
-            </div>
-            <div>
                 <label for="Monto" class="block text-gray-700 font-bold">Monto</label>
-                <input type="number" asp-for="@(new TransaccionViewModel().Monto)" class="w-full p-2 border rounded-lg">
-                <span asp-validation-for="@(new TransaccionViewModel().Monto)" class="text-red-500"></span>
+                <input type="number" asp-for="@(new PagoViewModel().Monto)" class="w-full p-2 border rounded-lg">
+                <span asp-validation-for="@(new PagoViewModel().Monto)" class="text-red-500"></span>
             </div>
             <div>
                 <label for="Fecha" class="block text-gray-700 font-bold">Fecha</label>
-                <input type="date" asp-for="@(new TransaccionViewModel().Fecha)" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="w-full p-2 border rounded-lg">
-                <span asp-validation-for="@(new TransaccionViewModel().Fecha)" class="text-red-500"></span>
+                <input type="date" asp-for="@(new PagoViewModel().Fecha)" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="w-full p-2 border rounded-lg">
+                <span asp-validation-for="@(new PagoViewModel().Fecha)" class="text-red-500"></span>
             </div>
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Agregar Pago</button>
         </form>
@@ -31,7 +38,7 @@
 
     <!-- Tabla de pagos -->
     <div class="bg-white shadow-lg p-6 rounded-lg mt-6">
-        <h2 class="text-xl font-bold text-blue-600">Historial de Pagos</h2>
+        <h2 class="text-xl font-bold text-blue-600">Historial de Pagos del Mes</h2>
 
         <!-- Contenedor con scroll y encabezado fijo -->
         <div class="overflow-x-auto max-h-96 relative">
@@ -39,7 +46,6 @@
                 <thead class="bg-blue-600 text-white sticky top-0">
                     <tr>
                         <th class="p-3 text-left">Fecha</th>
-                        <th class="p-3 text-left">Descripción</th>
                         <th class="p-3 text-left">Monto</th>
                     </tr>
                 </thead>
@@ -48,7 +54,6 @@
                     {
                         <tr class="border-t">
                             <td class="p-3">@compra.Fecha.ToString("yyyy-MM-dd")</td>
-                            <td class="p-3">@compra.Descripcion</td>
                             <td class="p-3 text-red-600">$@compra.Monto</td>
                         </tr>
                     }
