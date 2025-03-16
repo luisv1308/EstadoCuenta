@@ -10,6 +10,8 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+app.UseMiddleware<EstadoCuenta.Web.Middleware.ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
