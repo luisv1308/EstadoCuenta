@@ -4,9 +4,8 @@ using EstadoCuenta.Web.Models;
 
 namespace EstadoCuenta.Web.Services
 {
-    public interface IPagosService
+    public interface IPagosService : ITransaccionService<PagoViewModel>
     {
-        Task<List<PagoViewModel>> ObtenerPagos();
-        Task<ResultadoOperacion> AgregarPago(PagoViewModel transaccion);
+        
     }
 }

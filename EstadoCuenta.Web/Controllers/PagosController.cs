@@ -5,9 +5,6 @@ namespace EstadoCuenta.Web.Controllers
 {
     public class PagosController : TransaccionBaseController<PagoViewModel>
     {
-        public PagosController(ITransaccionService<PagoViewModel> pagosService)
-            : base(pagosService)
-        {
-        }
+        public PagosController(IPagosService pagosService) : base(pagosService) { }
     }
 }

@@ -4,9 +4,8 @@ using EstadoCuenta.Web.Models;
 
 namespace EstadoCuenta.Web.Services
 {
-    public interface IComprasService
+    public interface IComprasService : ITransaccionService<CompraViewModel>
     {
-        Task<List<CompraViewModel>> ObtenerCompras();
-        Task<ResultadoOperacion> AgregarCompra(CompraViewModel transaccion);
+        
     }
 }

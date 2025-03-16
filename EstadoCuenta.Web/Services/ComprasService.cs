@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace EstadoCuenta.Web.Services
 {
-    public class ComprasService : ITransaccionService<CompraViewModel>
+    public class ComprasService : IComprasService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;

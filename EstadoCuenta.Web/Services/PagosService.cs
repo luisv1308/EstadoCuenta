@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace EstadoCuenta.Web.Services
 {
-    public class PagosService : ITransaccionService<PagoViewModel>
+    public class PagosService : IPagosService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;

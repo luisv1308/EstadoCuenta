@@ -3,6 +3,7 @@ using EstadoCuenta.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using EstadoCuenta.Web.Helpers;
 
 namespace EstadoCuenta.Web.Controllers
 {
@@ -26,15 +27,8 @@ namespace EstadoCuenta.Web.Controllers
         [ServiceFilter(typeof(HandleApiErrorFilter))]
         public async Task<IActionResult> Agregar(TViewModel transaccion)
         {
-            
             var result = await _transaccionService.AgregarTransaccion(transaccion);
-            if (!result.Exitoso)
-            {
-                return new BadRequestObjectResult(result);
-            }
-
-
-            return RedirectToAction("Index");
+            return ResponseHandler.ProcesarResultado(this, result, _transaccionService);
         }
     }
 }

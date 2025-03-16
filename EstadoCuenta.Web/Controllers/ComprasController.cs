@@ -6,9 +6,6 @@ namespace EstadoCuenta.Web.Controllers
 {
     public class ComprasController : TransaccionBaseController<CompraViewModel>
     {
-        public ComprasController(ITransaccionService<CompraViewModel> comprasService)
-            : base(comprasService)
-        {
-        }
+        public ComprasController(IComprasService comprasService) : base(comprasService) { }
     }
 }
