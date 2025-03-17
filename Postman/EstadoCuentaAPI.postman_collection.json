@@ -389,13 +389,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/Historial/1",
+							"raw": "{{base_url}}/api/Historiales/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"Historial",
+								"Historiales",
 								"1"
 							]
 						}
