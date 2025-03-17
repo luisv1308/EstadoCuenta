@@ -11,7 +11,7 @@ Incluye funcionalidades como el registro de compras y pagos, visualización del 
 - **Tiempo Real:** SignalR para notificaciones en tiempo real.
 - **Despliegue:** Azure App Services, Azure SQL Server.
 
-  ## **Instalacion de la Base de Datos**
+## **Instalacion de la Base de Datos**
 -  Requisitos Previos
    - Antes de ejecutar el script, asegúrate de tener instalado:
       *  SQL Server  y SQL Server Management Studio (SSMS).
@@ -25,6 +25,32 @@ Incluye funcionalidades como el registro de compras y pagos, visualización del 
    - Conexión a la API
       Configura la cadena de conexión en appsettings.json de la API:
 
+## Importar la colección de Postman
+
+Para probar los endpoints de la API, importa el siguiente archivo en Postman:
+
+[EstadoCuentaAPI.postman_collection.json](Postman/EstadoCuentaAPI.postman_collection.json)
+
+**Pasos:**
+1. Abre Postman y ve a **File > Import**.
+2. Selecciona el archivo JSON exportado.
+3. Asegúrate de configurar la variable `base_url` con la URL correcta de la API.
+4. ¡Listo! Ya puedes probar los endpoints.
+
+## Como probar el proyecto
+1. Abre la solución en Visual Studio
+2. Haz clic derecho en la solución (no en los proyectos).
+3. Después elige propiedades
+4. Ahora en la ventana de Proyecto de inicio escoja proyectos de inicio múltiple
+5. En acción escoja las opciones adecuadas 
+6. Clic en aceptar
+7. Presiona F5 en Visual Studio
+8. Visual Studio lanzará ambos proyectos simultáneamente
+9. La API se ejecutará en https://localhost:7264/ (o el puerto que tenga configurado).
+10. La aplicación Web se ejecutará en https://localhost:7025/ (o el puerto que tenga configurado).
+11. Abre la Web en el navegador y compruebe de que la API esté funcionando correctamente
+12. Prueba la API con Swagger en https://localhost:7264/swagger 
+13. Puedes usar la colección de Postman incluida en el repositorio
 
 ## **Arquitectura de la Solución**
 La aplicación se divide en dos proyectos:
@@ -74,7 +100,7 @@ La aplicación se divide en dos proyectos:
   ```
 
 ### **Historial de Transacciones**
-- `GET /api/Historial/{tarjetaId}` - Obtiene el historial de transacciones del mes.
+- `GET /api/Historiales/{tarjetaId}` - Obtiene el historial de transacciones del mes.
 
 ### **Exportación**
 - `GET /api/Export/pdf/{tarjetaId}` - Exporta el estado de cuenta en PDF.
@@ -99,18 +125,6 @@ La aplicación se divide en dos proyectos:
 - Tabla con todas las transacciones del mes.
 - Paginación y búsqueda con DataTables.
 - Actualización en tiempo real con WebSockets.
-
-## Importar la colección de Postman
-
-Para probar los endpoints de la API, importa el siguiente archivo en Postman:
-
-[EstadoCuentaAPI.postman_collection.json](Postman/EstadoCuentaAPI.postman_collection.json)
-
-**Pasos:**
-1. Abre Postman y ve a **File > Import**.
-2. Selecciona el archivo JSON exportado.
-3. Asegúrate de configurar la variable `base_url` con la URL correcta de la API.
-4. ¡Listo! Ya puedes probar los endpoints.
 
 
 ## **Manejo de Errores y Validaciones**
