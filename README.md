@@ -18,8 +18,9 @@ Incluye funcionalidades como el registro de compras y pagos, visualización del 
    - Creación de la Base de Datos
       Abre SQL Server Management Studio (SSMS).
       Conéctate a tu servidor SQL.
-      Abre el script SQL:
-        Ubicado en [EstadoCuentaDBScript.sql](DBScript/EstadoCuentaDBScript.sql)
+      Crea una nueva base de datos llamada EstadoCuentaDB (o el nombre que prefieras).
+      Ahora en File seleccionar Open y luego File y abre el archivo script SQL:
+         Ubicado en [EstadoCuentaDBScript.sql](DBScript/EstadoCuentaDBScript.sql)
       Ejecuta el script presionando F5 o haciendo clic en Ejecutar.
       Verifica que se hayan creado las tablas y los procedimientos almacenados.
    - Conexión a la API
