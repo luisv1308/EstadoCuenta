@@ -65,7 +65,7 @@ La aplicación se divide en dos proyectos:
 - `GET /api/Export/pdf/{tarjetaId}` - Exporta el estado de cuenta en PDF.
 - `GET /api/Export/excel/{tarjetaId}` - Exporta las compras en Excel.
 
-### **Exportación**
+### **Pruebas**
 - `GET /api/EstadoCuenta/prueba-error` - Prueba el manejo de errores.
 - `GET /health` - Chequea el estado del servidor.
 
