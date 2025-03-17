@@ -36,7 +36,7 @@ namespace EstadoCuenta.Api.Controllers
         [ServiceFilter(typeof(ValidationFilter<TarjetaCreditoDTO>))]
         public async Task<IActionResult> CrearTarjeta([FromBody] TarjetaCreditoDTO tarjetaDTO)
         {
-            var command = new CreateTarjetaCommand(tarjetaDTO.Titular, tarjetaDTO.NumeroTarjeta, tarjetaDTO.LimiteCredito);
+            var command = new CreateTarjetaCommand(tarjetaDTO.Titular, tarjetaDTO.NumeroTarjeta, tarjetaDTO.SaldoActual, tarjetaDTO.LimiteCredito);
             var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(ObtenerTarjeta), new { id }, id);
