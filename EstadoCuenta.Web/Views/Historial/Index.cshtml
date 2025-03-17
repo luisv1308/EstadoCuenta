@@ -7,18 +7,20 @@
     <div class="bg-white shadow-lg p-6 rounded-lg">
         <h1 class="text-2xl font-bold text-blue-600">Historial de Transacciones</h1>
 
-        <table id="historial-table" class="w-full mt-4 bg-white shadow-md rounded-lg">
-            <thead>
-                <tr class="bg-blue-600 text-white">
-                    <th class="p-3 text-left">Fecha</th>
-                    <th class="p-3 text-left">Descripción</th>
-                    <th class="p-3 text-left">Monto</th>
-                    <th class="p-3 text-left">Tipo</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table id="historial-table" class="w-full mt-4 bg-white shadow-md rounded-lg">
+                <thead>
+                    <tr class="bg-blue-600 text-white">
+                        <th class="p-3 text-left">Fecha</th>
+                        <th class="p-3 text-left">Descripción</th>
+                        <th class="p-3 text-left">Monto</th>
+                        <th class="p-3 text-left">Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -27,6 +29,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.tailwindcss.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.4/js/dataTables.responsive.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.4/css/responsive.dataTables.min.css">
 
 <!-- SignalR para WebSockets -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
@@ -36,11 +40,11 @@
         const apiBaseUrl = document.querySelector("meta[name='api-base-url']").getAttribute("content");
 
         let table = new DataTable('#historial-table', {
+            responsive: true,
             ajax: {
                 url: `${apiBaseUrl}api/historiales/1`,
                 dataSrc: ""
             },
-            dataSrc: "",
             columns: [
                 { data: "fecha", render: function (data) { return new Date(data).toLocaleDateString(); } },
                 { data: "descripcion" },

@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="api-base-url" content="@ViewData["ApiBaseUrl"]">
-
     <title>@ViewData["Title"] - Estado de Cuenta</title>
     <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
@@ -14,9 +13,12 @@
     <nav class="bg-blue-600 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a asp-controller="Home" asp-action="Index" class="text-lg font-bold">Banca En Linea</a>
+                    <a asp-controller="Home" asp-action="Index" class="text-lg font-bold">Banca En Línea</a>
                 </div>
+
+                <!-- Menú normal (desktop) -->
                 <div class="hidden md:flex space-x-6">
                     <a asp-controller="Home" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Inicio</a>
                     <a asp-controller="EstadoCuenta" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Estado de Cuenta</a>
@@ -24,8 +26,14 @@
                     <a asp-controller="Pagos" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Pagos</a>
                     <a asp-controller="Historial" asp-action="Index" class="hover:bg-blue-700 px-3 py-2 rounded-md">Historial de Transacciones</a>
                 </div>
+
+                <!-- Botón para menú móvil -->
+                <button id="menu-btn" class="md:hidden text-white focus:outline-none p-2 rounded-lg bg-blue-700">
+                    ☰
+                </button>
             </div>
         </div>
+
         <!-- Menú desplegable en móvil -->
         <div id="mobile-menu" class="hidden md:hidden bg-blue-700 px-4 py-2 space-y-2">
             <a asp-controller="Home" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Inicio</a>
@@ -35,6 +43,7 @@
             <a asp-controller="Historial" asp-action="Index" class="block text-white hover:bg-blue-800 px-3 py-2 rounded-md">Historial de Transacciones</a>
         </div>
     </nav>
+
 
     <!-- Contenido principal -->
     <main class="flex-grow container mx-auto mt-6 px-4 overflow-auto">
@@ -47,9 +56,9 @@
     </footer>
 
     <script>
-        // document.getElementById('menu-btn').addEventListener('click', function () {
-        //     document.getElementById('mobile-menu').classList.toggle('hidden');
-        // });
+        document.getElementById('menu-btn').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

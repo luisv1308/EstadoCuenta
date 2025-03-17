@@ -8,3 +8,15 @@
         background-color: rgb(161 170 187 / 50%) !important;
     }
 }
+
+
+@media (max-width: 640px) {
+    .dt-search input {
+        width: 120px !important; /* Reduce el tamaño en móvil */
+        font-size: 14px !important; /* Texto más pequeño */
+        padding: 4px !important; /* Menos padding */
+    }
+    .dt-length select {
+        width: 100px !important;
+    }
+}
