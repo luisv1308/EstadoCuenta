@@ -47,6 +47,9 @@ namespace EstadoCuenta.Api.Services
                 document.Add(new Paragraph("\n"));
 
                 // Creando tabla de transacciones
+                document.Add(new Paragraph("Transacciones:"));
+                document.Add(new Paragraph("\n"));
+
                 PdfPTable table = new PdfPTable(4);
                 table.AddCell("Fecha");
                 table.AddCell("Descripcion");
@@ -105,12 +108,14 @@ namespace EstadoCuenta.Api.Services
                 worksheet.Cells["A12"].Value = "Pago de Contado con Intereses";
                 worksheet.Cells["B12"].Value = Math.Round(estadoCuenta.PagoContadoConIntereses, 2);
 
-                worksheet.Cells["A14"].Value = "Fecha";
-                worksheet.Cells["B14"].Value = "Descripcion";
-                worksheet.Cells["C14"].Value = "Monto";
-                worksheet.Cells["D14"].Value = "Tipo";
+                worksheet.Cells["A13"].Value = "Transacciones:";
 
-                int row = 14;
+                worksheet.Cells["A15"].Value = "Fecha";
+                worksheet.Cells["B15"].Value = "Descripcion";
+                worksheet.Cells["C15"].Value = "Monto";
+                worksheet.Cells["D15"].Value = "Tipo";
+
+                int row = 16;
                 foreach (var transaccion in estadoCuenta.Compras)
                 {
                     worksheet.Cells[$"A{row}"].Value = transaccion.Fecha.ToString("dd/MM/yyyy");
