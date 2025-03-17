@@ -18,6 +18,11 @@ namespace EstadoCuenta.Api.Validators
                 .WithMessage("El numero de tarjeta es requerido")
                 .Length(16).WithMessage("El numero de tarjeta debe tener 16 caracteres")
                 .Matches("^[0-9]+$").WithMessage("El numero de tarjeta debe ser numerico");
+            RuleFor(x => x.SaldoActual)
+                .NotEmpty()
+                .WithMessage("El saldo actual es requerido")
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("El saldo actual debe ser 0 o mas");
 
             RuleFor(x => x.LimiteCredito)
                 .GreaterThan(0)
