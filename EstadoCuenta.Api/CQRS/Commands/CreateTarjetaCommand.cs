@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EstadoCuenta.Api.CQRS.Commands
 {
-   public record CreateTarjetaCommand(string Titular, string NumeroTarjeta, decimal LimiteCredito) : IRequest<int>;
+   public record CreateTarjetaCommand(string Titular, string NumeroTarjeta, decimal SaldoActual, decimal LimiteCredito) : IRequest<int>;
 
    public class CreateTarjetaHandler : IRequestHandler<CreateTarjetaCommand, int>
    {
@@ -22,7 +22,7 @@ namespace EstadoCuenta.Api.CQRS.Commands
              Titular = request.Titular,
              NumeroTarjeta = request.NumeroTarjeta,
              LimiteCredito = request.LimiteCredito,
-             SaldoActual = 0
+             SaldoActual = request.SaldoActual
          };
 
          await _unitOfWork.TarjetasCredito.AgregarAsync(tarjeta);

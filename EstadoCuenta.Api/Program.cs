@@ -60,7 +60,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("https://localhost:7025", "https://127.0.0.1:7025")
+            .WithOrigins("https://localhost:7025", "https://127.0.0.1:7025", "https://estado-cuenta-web.azurewebsites.net")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()); 

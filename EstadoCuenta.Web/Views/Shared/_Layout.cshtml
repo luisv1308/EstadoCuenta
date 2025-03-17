@@ -64,10 +64,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
 
     <script>
+        const apiBaseUrl = document.querySelector("meta[name='api-base-url']").getAttribute("content");
         document.addEventListener("DOMContentLoaded", function () {
             // Conectar con SignalR
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl("https://localhost:7264/transaccionesHub")
+                .withUrl(`${apiBaseUrl}transaccionesHub`)
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 

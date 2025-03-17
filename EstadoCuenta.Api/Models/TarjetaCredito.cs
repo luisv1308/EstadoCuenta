@@ -17,10 +17,6 @@ namespace EstadoCuenta.Api.Models
         public string NumeroTarjeta { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(3, MinimumLength = 3, ErrorMessage = "El código de seguridad debe tener 3 dígitos")]
-        public string CodigoSeguridad { get; set; } = string.Empty;
-
-        [Required]
         public DateTime FechaVencimiento { get; set; }
 
         [Required]
