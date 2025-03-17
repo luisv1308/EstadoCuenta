@@ -15,6 +15,10 @@ builder.Services.AddScoped<IComprasService, ComprasService>();
 builder.Services.AddScoped<IPagosService, PagosService>();
 builder.Services.AddScoped<HandleApiErrorFilter>();
 builder.Services.AddScoped<ValidationModelFilter>();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<ApiBaseUrlFilter>();
+});
 
 var app = builder.Build();
 
