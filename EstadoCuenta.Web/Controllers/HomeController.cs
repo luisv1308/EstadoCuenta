@@ -15,7 +15,7 @@ namespace EstadoCuenta.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "EstadoCuenta");
         }
 
         public IActionResult Privacy()

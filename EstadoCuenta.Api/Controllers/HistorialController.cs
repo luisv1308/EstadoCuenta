@@ -12,12 +12,12 @@ namespace EstadoCuenta.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TransaccionController : ControllerBase
+    public class HistorialController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public TransaccionController(IMediator mediator, IMapper mapper)
+        public HistorialController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;

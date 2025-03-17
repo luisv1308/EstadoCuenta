@@ -1,0 +1,641 @@
+{
+	"info": {
+		"_postman_id": "4fe35253-9412-4c13-8fce-779da1907962",
+		"name": "EstadoCuentaAPI",
+		"description": "_API para la gestión de estado de cuenta, compras y pagos._",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "430376"
+	},
+	"item": [
+		{
+			"name": "Tarjetas de Crédito",
+			"item": [
+				{
+					"name": "Crear una Tarjeta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 2001 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titular\": \"Luis Enrique Velasquez Gomez\",\n  \"numeroTarjeta\": \"1111222233334444\",\n  \"saldoActual\": 1000,\n  \"limiteCredito\": 10000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/TarjetaCredito",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"TarjetaCredito"
+							]
+						},
+						"description": "**Respuesta esperada:** 201 Created"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Tarjeta por ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Debe contener los datos de la tarjeta\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"titular\");",
+									"    pm.expect(jsonData).to.have.property(\"saldoActual\");",
+									"    pm.expect(jsonData).to.have.property(\"limiteCredito\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/TarjetaCredito/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"TarjetaCredito",
+								"1"
+							]
+						},
+						"description": "**Respuesta esperada**: Detalles de la tarjeta"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para registrar tarjetas de credito y traer una tarjeta por id"
+		},
+		{
+			"name": "Estado de Cuenta",
+			"item": [
+				{
+					"name": "Obtener Estado de Cuenta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener el estado de cuenta\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"titular\");\r",
+									"    pm.expect(jsonData).to.have.property(\"saldoActual\");\r",
+									"    pm.expect(jsonData).to.have.property(\"limiteCredito\");\r",
+									"    pm.expect(jsonData).to.have.property(\"saldoDisponible\")\r",
+									"    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/EstadoCuenta/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"EstadoCuenta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint para traer toda la informacion del estado de cuenta usando el id de una tarjeta"
+		},
+		{
+			"name": "Pagos",
+			"item": [
+				{
+					"name": "Agregar un Pago",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener los datos del pago registrado\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"tarjetaCreditoId\");\r",
+									"    pm.expect(jsonData).to.have.property(\"monto\");\r",
+									"    pm.expect(jsonData).to.have.property(\"fecha\");\r",
+									"    pm.expect(jsonData).to.have.property(\"tipo\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tarjetaCreditoId\": 1,\r\n  \"descripcion\": \"Pago a tarjeta\",\r\n  \"monto\": 500,\r\n  \"fecha\": \"2025-03-14\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Pagos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Pagos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Pagos por Tarjeta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener los datos de los pagos\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tarjetaCreditoId\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"descripcion\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"monto\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"fecha\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tipo\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Pagos/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Pagos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para registrar pagos y obtener los pagos del mes usando el id de una tarjeta"
+		},
+		{
+			"name": "Compras",
+			"item": [
+				{
+					"name": "Agregar una Compra",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener los datos de la compra registrada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"tarjetaCreditoId\");\r",
+									"    pm.expect(jsonData).to.have.property(\"monto\");\r",
+									"    pm.expect(jsonData).to.have.property(\"fecha\");\r",
+									"    pm.expect(jsonData).to.have.property(\"tipo\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tarjetaCreditoId\": 1,\r\n  \"descripcion\": \"Compra en Amazon\",\r\n  \"monto\": 200.50,\r\n  \"fecha\": \"2025-03-14\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Compras",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Compras"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Compras por Tarjeta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener los datos de las compras\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tarjetaCreditoId\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"descripcion\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"monto\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"fecha\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tipo\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Compras/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Compras",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para registrar compras y obtener las compras del mes usando el id de una tarjeta"
+		},
+		{
+			"name": "Historial",
+			"item": [
+				{
+					"name": "Obtener Historial Por Tarjeta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener los datos de las transacciones\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tarjetaCreditoId\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"descripcion\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"monto\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"fecha\");\r",
+									"    pm.expect(jsonData[0]).to.have.property(\"tipo\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Historial/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Historial",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint para traer el historial del mes tanto pagos como compras usando el id de una tarjeta"
+		},
+		{
+			"name": "Export",
+			"item": [
+				{
+					"name": "Export PDF Por Tarjeta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Export/pdf/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Export",
+								"pdf",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Excel Por Tarjeta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Sol</th>\r",
+									"        <th>Camera ID</th>\r",
+									"        <th>Camera Name</th>\r",
+									"        <th>Image Source</th>\r",
+									"        <th>Earth Date</th>\r",
+									"        <th>Rover ID</th>\r",
+									"        <th>Rover Name</th>\r",
+									"        <th>Landing Date</th>\r",
+									"        <th>Launch Date</th>\r",
+									"        <th>Status</th>\r",
+									"        <th>Max Sol</th>\r",
+									"        <th>Max Date</th>\r",
+									"        <th>Total Photos</th>\r",
+									"        <th>Camera Names</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response.photos}}\r",
+									"        <tr id=row_{{@key}}>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{sol}}</td>\r",
+									"            <td>{{camera.id}}</td>\r",
+									"            <td>{{camera.name}}</td>\r",
+									"            <td>{{img_src}}</td>\r",
+									"            <td>{{earth_date}}</td>\r",
+									"            <td>{{rover.id}}</td>\r",
+									"            <td>{{rover.name}}</td>\r",
+									"            <td>{{rover.landing_date}}</td>\r",
+									"            <td>{{rover.launch_date}}</td>\r",
+									"            <td>{{rover.status}}</td>\r",
+									"            <td>{{rover.max_sol}}</td>\r",
+									"            <td>{{rover.max_date}}</td>\r",
+									"            <td>{{rover.total_photos}}</td>\r",
+									"            <td>\r",
+									"                {{#each rover.cameras}}\r",
+									"                    {{name}}{{#unless @last}}, {{/unless}}\r",
+									"                {{/each}}\r",
+									"            </td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    var visualizerData = pm.response.json();\r",
+									"    return {response: visualizerData};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Export/excel/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Export",
+								"excel",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints que sirven para exportar el estado de cuenta a archivos"
+		},
+		{
+			"name": "Pruebas",
+			"item": [
+				{
+					"name": "Testear Global Exceptions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 500 Internal Server Error\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener informacion de la excepcion\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"message\");\r",
+									"    pm.expect(jsonData).to.have.property(\"details\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Test/prueba-error",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Test",
+								"prueba-error"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Testear HealthCheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respuesta debe ser 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Debe contener informacion del estado del servidor\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"status\");\r",
+									"    pm.expect(jsonData).to.have.property(\"totalDuration\");\r",
+									"    pm.expect(jsonData).to.have.property(\"entries\");\r",
+									"    pm.expect(jsonData.entries).to.have.property(\"sqlserver\");\r",
+									"    pm.expect(jsonData.entries).to.have.property(\"Uso de Memoria\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para probar algunas funcionalidades del sistema"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://estadocuenta-api-angdfwfeawhgfsee.canadacentral-01.azurewebsites.net"
+		}
+	]
+}
