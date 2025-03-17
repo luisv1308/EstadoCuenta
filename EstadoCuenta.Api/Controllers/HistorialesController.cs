@@ -12,19 +12,19 @@ namespace EstadoCuenta.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HistorialController : ControllerBase
+    public class HistorialesController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public HistorialController(IMediator mediator, IMapper mapper)
+        public HistorialesController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
         }
 
         [HttpGet("{tarjetaId}")]
-        public async Task<IActionResult> ObtenerTransacciones(int tarjetaId)
+        public async Task<IActionResult> ObtenerHistorial(int tarjetaId)
         {
             IEnumerable<TransaccionDTO> transacciones = await _mediator.Send(new GetTransaccionesByTarjetaQuery(tarjetaId));
             if (transacciones == null)

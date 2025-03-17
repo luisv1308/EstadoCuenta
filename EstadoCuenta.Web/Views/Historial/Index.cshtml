@@ -33,13 +33,14 @@
 
 <script>
     $(document).ready(function () {
+        const apiBaseUrl = document.querySelector("meta[name='api-base-url']").getAttribute("content");
+
         let table = new DataTable('#historial-table', {
             ajax: {
-                url: "/Historial/ObtenerHistorial",
-                dataSrc: function (json) {
-                    return json.success ? json.data : [];
-                }
+                url: `${apiBaseUrl}api/historiales/1`,
+                dataSrc: ""
             },
+            dataSrc: "",
             columns: [
                 { data: "fecha", render: function (data) { return new Date(data).toLocaleDateString(); } },
                 { data: "descripcion" },
@@ -50,8 +51,6 @@
             pageLength: 10,
             responsive: true
         });
-
-        const apiBaseUrl = document.querySelector("meta[name='api-base-url']").getAttribute("content");
 
         // Conectar con SignalR
         const connection = new signalR.HubConnectionBuilder()

@@ -38,10 +38,11 @@ namespace EstadoCuenta.Api.Controllers
         public async Task<IActionResult> AgregarPago([FromBody] PagosDTO transaccion)
         {
             transaccion.Tipo = "Pago";
-            var command = new CreatePagoCommand(transaccion.TarjetaCreditoId, "Pago a tarjeta", transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
+            transaccion.Descripcion = "Pago a tarjeta";
+            var command = new CreatePagoCommand(transaccion.TarjetaCreditoId, transaccion.Descripcion, transaccion.Monto, transaccion.Fecha, transaccion.Tipo);
             var transaccionId = await _mediator.Send(command);
 
-            transaccion.Id = transaccionId;
+            transaccion.Id = transaccionId;            
 
             await _notificationService.NotificarNuevoPago(transaccion);
 

@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Data;
 using HealthChecks.UI.Client;
 using EstadoCuenta.Api.Filters;
-
+using System.Diagnostics;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,6 +72,15 @@ builder.Services.AddScoped<TransaccionNotificationService>();
 
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .AddProcessHealthCheck("dotnet", p =>
+    {
+        var process = Process.GetProcessesByName("dotnet").FirstOrDefault();
+        if (process != null)
+        {
+            return process.TotalProcessorTime.TotalMilliseconds < 20000;
+        }
+        return false;
+    })
     .AddPrivateMemoryHealthCheck(maximumMemoryBytes: 512 * 1024 * 1024, name: "Uso de Memoria") // 512MB
     .AddDiskStorageHealthCheck(setup =>
     {
