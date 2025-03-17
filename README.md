@@ -11,6 +11,21 @@ Incluye funcionalidades como el registro de compras y pagos, visualización del 
 - **Tiempo Real:** SignalR para notificaciones en tiempo real.
 - **Despliegue:** Azure App Services, Azure SQL Server.
 
+  ## **Instalacion de la Base de Datos**
+-  Requisitos Previos
+   - Antes de ejecutar el script, asegúrate de tener instalado:
+      *  SQL Server  y SQL Server Management Studio (SSMS).
+   - Creación de la Base de Datos
+      Abre SQL Server Management Studio (SSMS).
+      Conéctate a tu servidor SQL.
+      Abre el script SQL:
+        Ubicado en [EstadoCuentaDBScript.sql](DBScript/EstadoCuentaDBScript.sql)
+      Ejecuta el script presionando F5 o haciendo clic en Ejecutar.
+      Verifica que se hayan creado las tablas y los procedimientos almacenados.
+   - Conexión a la API
+      Configura la cadena de conexión en appsettings.json de la API:
+
+
 ## **Arquitectura de la Solución**
 La aplicación se divide en dos proyectos:
 1. **EstadoCuenta.API** - API REST que gestiona las operaciones con la base de datos.
